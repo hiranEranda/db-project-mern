@@ -5,7 +5,7 @@ class AppNavBar extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-md navbar-dark bg-primary mb-4">
-        <div class="container">
+        <div className="container">
           <Link to="/" className="navbar-brand">
             clientpanel
           </Link>
