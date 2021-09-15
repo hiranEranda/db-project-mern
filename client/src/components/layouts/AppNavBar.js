@@ -21,7 +21,17 @@ class AppNavBar extends Component {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <Link to="/" className="nav-link">
-                  dash
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/makecomplaint" className="nav-link">
+                  Make complaint
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/mycomplaints" className="nav-link">
+                  My complaints
                 </Link>
               </li>
             </ul>
