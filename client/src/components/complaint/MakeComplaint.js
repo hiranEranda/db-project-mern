@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { Button } from "@material-ui/core";
 import "../../css/complaint.css";
+import axios from "axios";
 
 function MakeComplaint() {
   const [complaint, setComplaint] = useState({
@@ -16,10 +18,24 @@ function MakeComplaint() {
       [e.target.name]: e.target.value,
     });
   };
+
+  const formHandler = (e) => {
+    e.preventDefault();
+    console.log("form handler called");
+    axios
+      .post(
+        `http://localhost:5000/api/complaints/addcomplaint?subject=${complaint.subject}&description=${complaint.description}&product=${complaint.product}&seller_r_p=${complaint.seller_r_p}&seller=${complaint.seller}&client_id=1`
+      )
+      .then((res) => {
+        console.log("success");
+      })
+      .catch((e) => console.log(e));
+  };
+
   return (
     <div>
       <div className="container">
-        <form action="complaint.php" method="post">
+        <form onSubmit={formHandler}>
           <div className="col-md-12">
             <h3>Complaint</h3>
             <hr />
@@ -61,9 +77,9 @@ function MakeComplaint() {
             onChange={handleData}
           />
 
-          <button id="submit" type="submit" name="submit">
+          <Button variant="contained" color="primary" type="submit">
             Submit
-          </button>
+          </Button>
         </form>
       </div>
     </div>

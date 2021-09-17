@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { IdContext } from "./MyComplaints";
 import axios from "axios";
 
 function ViewComplaint() {
-  const complaint_id = 31;
+  const complaint_id = useContext(IdContext);
   const [complaints, setcomplaints] = useState([]);
   useEffect(() => {
-    axios(`http://localhost:5000/api/complaints/viewcomplaint/${complaint_id}`)
+    axios
+      .get(`http://localhost:5000/api/complaints/viewcomplaint/${complaint_id}`)
       .then((res) => {
         setcomplaints(res.data);
+        console.log(res.data);
       })
       .catch((e) => console.log(e));
-  }, []);
-  //   console.log(complaints);
+  }, [complaint_id]);
   return (
     <div>
       {complaints.map((complaint) => (
         <div className="container" key={complaint.complaint_id}>
           <dl className="row">
             <dt className="col-sm-3">Complaint ID</dt>
-            <dd className="col-sm-9">{complaint.complaint_date}</dd>
+            <dd className="col-sm-9">{complaint.complaint_id}</dd>
             <dt className="col-sm-3">Complainant ID</dt>
             <dd className="col-sm-9"> {complaint.consumer_id} </dd>
             <dt className="col-sm-3">Subject</dt>
