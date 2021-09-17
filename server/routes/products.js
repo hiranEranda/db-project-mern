@@ -6,14 +6,16 @@ const router = express.Router();
 // get all
 router.get("/all", async (req, res) => {
   let data = await dbOperations.getAll();
-  res.send(data[0]);
+  res.send(data);
 });
 
 // filter by type
 router.get("/:type", async (req, res) => {
   let type = req.params.type;
+  console.log("filter function and type rec: " + type);
   let data = await dbOperations.filterByType(type);
-  res.send(data[0]);
+  res.send(data);
+  console.log(data);
 });
 
 // get single product

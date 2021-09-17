@@ -40,8 +40,8 @@ select {
 
 button {
   border-radius: 20px;
-  border: 1px solid #3e6639;
-  background-color: #599251;
+  border: 1px solid #000000;
+  background-color: #2035ac;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;

@@ -28,6 +28,7 @@ function filterByType(type) {
     let sql = `SELECT * FROM products WHERE p_type='${type}' ORDER BY products.product_id ASC `;
     db.query(sql, (error, results) => {
       if (error) console.log(error.message);
+      console.log("db called for flter");
       resolve(results);
       reject(new Error("from get all"));
     });
@@ -103,15 +104,28 @@ function addComplaints(details) {
 }
 
 // view a complaint
-function viewComplaint(details) {
+function viewComplaint(complaint_id) {
   return new Promise((resolve, reject) => {
-    const { client_id, complaint_id } = details;
     sql = `SELECT * FROM complaint 
-          WHERE consumer_id = ${client_id} AND complaint_id = ${complaint_id}`;
+          WHERE complaint_id = ${complaint_id}`;
     db.query(sql, (error, results) => {
       if (error) console.log(error.message);
       resolve(results);
       reject(new Error("from getMyComplaints"));
+    });
+  });
+}
+
+// delete a complaint
+function deleteComplaint(complaint_id) {
+  return new Promise((resolve, reject) => {
+    sql = `UPDATE complaint 
+                SET is_deleted = 1 
+                WHERE complaint_id = ${complaint_id} LIMIT 1`;
+    db.query(sql, (error, result) => {
+      if (error) console.log(error.message);
+      resolve(result);
+      reject(new Error("from deleteComplaints"));
     });
   });
 }
@@ -126,4 +140,5 @@ module.exports = {
   addComplaints: addComplaints,
   getMyComplaints: getMyComplaints,
   viewComplaint: viewComplaint,
+  deleteComplaint: deleteComplaint,
 };

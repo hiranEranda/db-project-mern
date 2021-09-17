@@ -14,7 +14,7 @@ function MyComplaints() {
 
   const [complaints, setcomplaints] = useState([]);
   const [viewid, setviewid] = useState({ id: 0 });
-  const [deleteid, setdeleteid] = useState({ id: 0 });
+  const [deleteid, setdeleteid] = useState({ id: 100000000 });
 
   const [spinner, setSpinner] = useState(true);
   const [show, setShow] = useState(false);
@@ -23,7 +23,7 @@ function MyComplaints() {
     setTimeout(() => {
       setSpinner(false);
       setShow(true);
-    }, 2700);
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -36,24 +36,25 @@ function MyComplaints() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:5000/api/complaints/deletecomplaint/${deleteid.id}`
-      )
-      .then((res) => {
-        console.log("deleted");
-      })
-      .catch((e) => console.log(e));
+    if (deleteid.id < 100000000) {
+      axios
+        .get(
+          `http://localhost:5000/api/complaints/deletecomplaint/${deleteid.id}`
+        )
+        .then((res) => {
+          console.log("deleted");
+          window.location.reload();
+        })
+        .catch((e) => console.log(e));
+    }
   }, [deleteid.id]);
 
   const view = (val) => {
     setviewid({ id: val });
-    console.log(viewid.id);
   };
 
   const del = (val) => {
     setdeleteid({ id: val });
-    console.log(deleteid.id);
   };
   return (
     <>

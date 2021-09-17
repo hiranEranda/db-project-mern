@@ -20,7 +20,6 @@ function MakeComplaint() {
   };
 
   const formHandler = (e) => {
-    e.preventDefault();
     console.log("form handler called");
     axios
       .post(
@@ -28,6 +27,7 @@ function MakeComplaint() {
       )
       .then((res) => {
         console.log("success");
+        alert("complaint filed");
       })
       .catch((e) => console.log(e));
   };
