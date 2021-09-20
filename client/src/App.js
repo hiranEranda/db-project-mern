@@ -7,32 +7,73 @@ import MyComplaints from "./components/complaint/MyComplaints";
 
 import ViewComplaint from "./components/complaint/ViewComplaint";
 import Login from "./components/layouts/Login";
-// import Miyu from "./components/products/Miyu";
+import Register from "./components/layouts/Register";
+import { AuthContext } from "./helpers/AuthContext";
+
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function App() {
+  const [authState, setAuthState] = useState({
+    username: "",
+    id: 0,
+    status: false,
+  });
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/auth`, {
+        headers: { authToken: sessionStorage.getItem("authToken") },
+      })
+      .then((res) => {
+        if (res.data.error) {
+          setAuthState({ ...authState, status: false });
+        } else {
+          setAuthState({
+            username: res.data.username,
+            id: res.data.username,
+            status: true,
+          });
+        }
+      });
+  }, []);
+
   return (
-    <Router>
-      <div className="App">
-        <AppNavBar />
-        <div className="container">
-          <Switch>
-            <Route exact path="/login" component={Login}></Route>
-            <Route exact path="/" component={Home}></Route>
-            <Route
-              exact
-              path="/makecomplaint"
-              component={MakeComplaint}
-            ></Route>
-            <Route exact path="/mycomplaints" component={MyComplaints}></Route>
-            <Route
-              exact
-              path="/viewcomplaints"
-              component={ViewComplaint}
-            ></Route>
-          </Switch>
-        </div>
-      </div>
-    </Router>
+    <div className="App">
+      <AuthContext.Provider value={{ authState, setAuthState }}>
+        <Router>
+          <div className="App">
+            <AppNavBar />
+            <div className="container">
+              <Switch>
+                <Route exact path="/login" component={Login}></Route>
+                <Route exact path="/register" component={Register}></Route>
+                <Route
+                  exact
+                  path="/"
+                  component={() => <Home authorized={authState.status} />}
+                ></Route>
+                <Route
+                  exact
+                  path="/makecomplaint"
+                  component={MakeComplaint}
+                ></Route>
+                <Route
+                  exact
+                  path="/mycomplaints"
+                  component={MyComplaints}
+                ></Route>
+                <Route
+                  exact
+                  path="/viewcomplaints"
+                  component={ViewComplaint}
+                ></Route>
+              </Switch>
+            </div>
+          </div>
+        </Router>
+      </AuthContext.Provider>
+    </div>
   );
 }
 

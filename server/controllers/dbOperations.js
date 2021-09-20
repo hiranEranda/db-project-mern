@@ -1,4 +1,3 @@
-const { func } = require("joi");
 const mysql = require("mysql");
 var config = require("../config/config");
 
@@ -6,14 +5,50 @@ var config = require("../config/config");
 let db = mysql.createConnection(config.databaseOptions);
 db.connect((error) => {
   if (error) console.log(error.message);
-  console.log("Connected to the Database...");
+  else {
+    console.log("Connected to the Database...");
+  }
 });
+
+//-------------------------------------------------auth-------------------------------------------------
+// login
+function getClient(email) {
+  return new Promise((resolve, reject) => {
+    console.log("getClient called");
+    let sql = `SELECT * FROM Consumers
+                        WHERE email = '${email}'
+                        LIMIT 1`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from get client"));
+    });
+  });
+}
+
+// login
+function regClient(client) {
+  return new Promise((resolve, reject) => {
+    console.log("regClient called");
+    const { fname, lname, email, password } = client;
+
+    let sql = `INSERT INTO Consumers (uFname, uLname, email, password)
+                        VALUES ('${fname}', '${lname}', '${email}', '${password}')`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from get client"));
+    });
+  });
+}
 
 //-------------------------------------------------Products-------------------------------------------------
 // get all products
 function getAll() {
   return new Promise((resolve, reject) => {
-    let sql = "SELECT * FROM `products` ORDER BY `products`.`product_id` ASC ";
+    let sql = `SELECT p.product_id, p.name, m.mrp, m.mrp_date FROM Products As p
+                JOIN Max_retail_price As m
+                ON p.product_id = m.product_id`;
     db.query(sql, (error, results) => {
       if (error) console.log(error.message);
       resolve(results);
@@ -25,7 +60,10 @@ function getAll() {
 // filter products by type
 function filterByType(type) {
   return new Promise((resolve, reject) => {
-    let sql = `SELECT * FROM products WHERE p_type='${type}' ORDER BY products.product_id ASC `;
+    let sql = `SELECT p.product_id, p.name, m.mrp, m.mrp_date FROM Products As p
+                JOIN Max_retail_price As m
+                ON p.product_id = m.product_id 
+                WHERE p_type='${type}' ORDER BY p.product_id ASC `;
     db.query(sql, (error, results) => {
       if (error) console.log(error.message);
       console.log("db called for flter");
@@ -77,7 +115,7 @@ function getMaxPrice(product) {
             WHERE p.name = '${product}'`;
 
     db.query(sql_1, (error, results) => {
-      if (error) console.log(error.message);
+      if (error) return console.log(error.message);
       max_price = results[0].mrp;
       console.log("get max price called");
       resolve(max_price);
@@ -88,16 +126,18 @@ function getMaxPrice(product) {
 // addComplaints
 function addComplaints(details) {
   return new Promise(async (resolve, reject) => {
-    let { subject, description, product, seller_r_p, seller, client_id } =
-      details;
+    let { subject, description, product, seller_r_p, seller } = details;
 
     let max_price = await getMaxPrice(product);
 
     let sql = `INSERT INTO complaint(subject, description, product, max_price, sellers_retail_price, seller_id, consumer_id, is_deleted)
-              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller}', ${client_id}, 0)`;
+              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller}', 1, 0)`;
     db.query(sql, (error, results) => {
-      if (error) console.log(error.message);
-      resolve(results);
+      if (error) {
+        console.log(error.message);
+        resolve(false);
+      }
+      resolve(true);
       reject(new Error("from addComplaint"));
     });
   });
@@ -141,4 +181,7 @@ module.exports = {
   getMyComplaints: getMyComplaints,
   viewComplaint: viewComplaint,
   deleteComplaint: deleteComplaint,
+  //auth
+  getClient: getClient,
+  regClient: regClient,
 };

@@ -3,7 +3,7 @@ import axios from "axios";
 import { TypeContext } from "./TypeFilter";
 
 function Filtered() {
-  const [filter, setfilter] = useState([]);
+  const [filter, setFilter] = useState([]);
   const type = useContext(TypeContext);
 
   useEffect(() => {
@@ -11,7 +11,8 @@ function Filtered() {
       axios
         .get(`http://localhost:5000/api/products/${type}`)
         .then((res) => {
-          setfilter(res.data);
+          if (res.data.error);
+          setFilter(res.data);
         })
         .catch((e) => {
           console.log("err was from filter");
@@ -23,8 +24,8 @@ function Filtered() {
       {filter.map((product) => (
         <tr key={product.product_id}>
           <td>{product.name}</td>
-          <td>{product.p_type}</td>
-          <td>{product.product_id}</td>
+          <td>{product.mrp}</td>
+          <td>{product.mrp_date}</td>
         </tr>
       ))}
     </>

@@ -5,8 +5,13 @@ const router = express.Router();
 
 router.get("/:id", async (req, res) => {
   let id = req.params.id;
-  let data = await dbOperations.getSeller(id);
-  res.send(data);
+  try {
+    let data = await dbOperations.getSeller(id);
+
+    res.send(data);
+  } catch (e) {
+    console.log(e.message);
+  }
 });
 
 module.exports = router;

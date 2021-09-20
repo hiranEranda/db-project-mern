@@ -1,19 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
-import { IdContext } from "./MyComplaints";
+import { DeleteIdContext, IdContext } from "./MyComplaints";
 import axios from "axios";
 
 function ViewComplaint() {
   const complaint_id = useContext(IdContext);
+  const delete_id = useContext(DeleteIdContext);
   const [complaints, setcomplaints] = useState([]);
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/complaints/viewcomplaint/${complaint_id}`)
-      .then((res) => {
-        setcomplaints(res.data);
-        console.log(res.data);
-      })
-      .catch((e) => console.log(e));
-  }, [complaint_id]);
+    if (delete_id !== complaint_id) {
+      axios
+        .get(
+          `http://localhost:5000/api/complaints/viewcomplaint/${complaint_id}`,
+          {
+            headers: { authToken: sessionStorage.getItem("authToken") },
+          }
+        )
+        .then((res) => {
+          setcomplaints(res.data);
+          console.log(res.data);
+        })
+        .catch((e) => console.log(e));
+    }
+  }, [complaint_id, delete_id]);
   return (
     <div>
       {complaints.map((complaint) => (

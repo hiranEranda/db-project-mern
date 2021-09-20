@@ -8,12 +8,12 @@ import ViewComplaint from "./ViewComplaint";
 import { HashLoader } from "react-spinners";
 
 export const IdContext = React.createContext();
+export const DeleteIdContext = React.createContext();
 
 function MyComplaints() {
-  const client_id = 1;
-
   const [complaints, setcomplaints] = useState([]);
   const [viewid, setviewid] = useState({ id: 0 });
+
   const [deleteid, setdeleteid] = useState({ id: 100000000 });
 
   const [spinner, setSpinner] = useState(true);
@@ -28,25 +28,18 @@ function MyComplaints() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/complaints/mycomplaints/${client_id}`)
+      .get(`http://localhost:5000/api/complaints/mycomplaints`, {
+        headers: { authToken: sessionStorage.getItem("authToken") },
+      })
       .then((res) => {
         setcomplaints(res.data);
       })
       .catch((e) => console.log(e));
-  }, []);
-
-  useEffect(() => {
-    if (deleteid.id < 100000000) {
-      axios
-        .get(
-          `http://localhost:5000/api/complaints/deletecomplaint/${deleteid.id}`
-        )
-        .then((res) => {
-          console.log("deleted");
-          window.location.reload();
-        })
-        .catch((e) => console.log(e));
-    }
+    return () => {
+      axios.get(`http://localhost:5000/api/complaints/mycomplaints`, {
+        headers: { authToken: sessionStorage.getItem("authToken") },
+      });
+    };
   }, [deleteid.id]);
 
   const view = (val) => {
@@ -55,6 +48,16 @@ function MyComplaints() {
 
   const del = (val) => {
     setdeleteid({ id: val });
+    axios
+      .delete(`http://localhost:5000/api/complaints/deletecomplaint/${val}`, {
+        headers: { authToken: sessionStorage.getItem("authToken") },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        // window.location.reload();
+      })
+      .catch((e) => console.log(e));
   };
   return (
     <>
@@ -116,9 +119,11 @@ function MyComplaints() {
               </div>
             </Grid>
             <Grid item xs={6}>
-              <IdContext.Provider value={viewid.id}>
-                <ViewComplaint />
-              </IdContext.Provider>
+              <DeleteIdContext.Provider value={deleteid.id}>
+                <IdContext.Provider value={viewid.id}>
+                  <ViewComplaint />
+                </IdContext.Provider>
+              </DeleteIdContext.Provider>
             </Grid>
           </Grid>
         </div>

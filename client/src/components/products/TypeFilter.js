@@ -11,12 +11,11 @@ export const TypeContext = React.createContext();
 
 export default function TypeFilter() {
   let initType = "all";
-  const [type, settype] = useState(initType);
+  const [type, setType] = useState(initType);
 
   const handleChange = (event) => {
-    settype(event.target.value);
+    setType(event.target.value);
   };
-  console.log(type);
   return (
     <div>
       <Box sx={{ maxWidth: 200 }}>

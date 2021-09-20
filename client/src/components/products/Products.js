@@ -8,6 +8,7 @@ function Products() {
     axios
       .get("http://localhost:5000/api/products/all")
       .then((res) => {
+        if (res.data.error);
         setstate(res.data);
       })
       .catch((e) => {
