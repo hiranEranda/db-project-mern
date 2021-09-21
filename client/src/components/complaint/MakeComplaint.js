@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import "../../css/complaint.css";
 import axios from "axios";
 
-function MakeComplaint() {
+function MakeComplaint({ authorized }) {
   const [complaint, setComplaint] = useState({
     subject: "",
     description: "",
@@ -34,6 +35,9 @@ function MakeComplaint() {
       .catch((e) => console.log(e));
   };
 
+  if (!authorized) {
+    return <Redirect to="/login" />;
+  }
   return (
     <div>
       <div className="container">

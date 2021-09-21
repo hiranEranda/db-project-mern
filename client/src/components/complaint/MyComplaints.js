@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { IconButton } from "@material-ui/core";
@@ -10,7 +11,7 @@ import { HashLoader } from "react-spinners";
 export const IdContext = React.createContext();
 export const DeleteIdContext = React.createContext();
 
-function MyComplaints() {
+function MyComplaints({ authorized }) {
   const [complaints, setcomplaints] = useState([]);
   const [viewid, setviewid] = useState({ id: 0 });
 
@@ -59,6 +60,10 @@ function MyComplaints() {
       })
       .catch((e) => console.log(e));
   };
+
+  if (!authorized) {
+    return <Redirect to="/login" />;
+  }
   return (
     <>
       <div className="container">

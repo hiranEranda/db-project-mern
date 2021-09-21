@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { DeleteIdContext, IdContext } from "./MyComplaints";
 import axios from "axios";
 
-function ViewComplaint() {
+function ViewComplaint({ authorized }) {
   const complaint_id = useContext(IdContext);
   const delete_id = useContext(DeleteIdContext);
   const [complaints, setcomplaints] = useState([]);
@@ -22,6 +22,7 @@ function ViewComplaint() {
         .catch((e) => console.log(e));
     }
   }, [complaint_id, delete_id]);
+
   return (
     <div>
       {complaints.map((complaint) => (

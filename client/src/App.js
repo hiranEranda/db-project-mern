@@ -5,7 +5,6 @@ import Home from "./components/layouts/Home";
 import MakeComplaint from "./components/complaint/MakeComplaint";
 import MyComplaints from "./components/complaint/MyComplaints";
 
-import ViewComplaint from "./components/complaint/ViewComplaint";
 import Login from "./components/layouts/Login";
 import Register from "./components/layouts/Register";
 import { AuthContext } from "./helpers/AuthContext";
@@ -48,25 +47,20 @@ function App() {
               <Switch>
                 <Route exact path="/login" component={Login}></Route>
                 <Route exact path="/register" component={Register}></Route>
-                <Route
-                  exact
-                  path="/"
-                  component={() => <Home authorized={authState.status} />}
-                ></Route>
+                <Route exact path="/" component={Home}></Route>
                 <Route
                   exact
                   path="/makecomplaint"
-                  component={MakeComplaint}
+                  component={() => (
+                    <MakeComplaint authorized={authState.status} />
+                  )}
                 ></Route>
                 <Route
                   exact
                   path="/mycomplaints"
-                  component={MyComplaints}
-                ></Route>
-                <Route
-                  exact
-                  path="/viewcomplaints"
-                  component={ViewComplaint}
+                  component={() => (
+                    <MyComplaints authorized={authState.status} />
+                  )}
                 ></Route>
               </Switch>
             </div>
