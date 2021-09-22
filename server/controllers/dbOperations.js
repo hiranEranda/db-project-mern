@@ -204,6 +204,24 @@ function getAllComplaints() {
   });
 }
 
+// get a clients complaints
+function getClientComplaints(seller_id) {
+  return new Promise((resolve, reject) => {
+    let sql = `SELECT subject, con.uFname, con.uLname, s.sFname, s.sLname, complaint_date, complaint_id, s.seller_id FROM complaint as com
+                            JOIN seller as s
+                            ON com.seller_id = s.seller_id
+                            JOIN consumers as con
+                            ON com.consumer_id = con.consumer_id
+                            WHERE com.seller_id = '${seller_id}'
+                            ORDER BY complaint_id DESC`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from getAllComplaints"));
+    });
+  });
+}
+
 // view a complaint
 function AdViewComplaint(complaint_id) {
   return new Promise((resolve, reject) => {
@@ -254,8 +272,6 @@ function getSellers(complaint_id) {
 }
 
 module.exports = {
-  //admin
-  getAdmin: getAdmin,
   //methods of products
   getAll: getAll,
   filterByType: filterByType,
@@ -270,8 +286,10 @@ module.exports = {
   getClient: getClient,
   regClient: regClient,
   //admin
+  getAdmin: getAdmin,
   getAllComplaints: getAllComplaints,
   AdViewComplaint: AdViewComplaint,
   AdDeleteComplaint: AdDeleteComplaint,
   getSellers: getSellers,
+  getClientComplaints: getClientComplaints,
 };

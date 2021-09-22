@@ -8,7 +8,7 @@ function Bridge() {
   const type = useContext(TypeContext);
   return (
     <>
-      <table className="table bg-light table-hover table-bordred border-primary">
+      <table className="table table-bordered table-light table-hover border-success">
         <tbody>
           <tr>
             <th className="text-center">Product Name</th>

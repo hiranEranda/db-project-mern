@@ -8,7 +8,9 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-// client log in
+// @route   POST api/auth/login
+// @desc    Client login
+// @access  public
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -38,7 +40,9 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// register
+// @route   POST api/auth/reg
+// @desc    Client register
+// @access  public
 router.post("/reg", async (req, res) => {
   console.log("register server called");
   try {
@@ -93,6 +97,9 @@ router.post("/reg", async (req, res) => {
   }
 });
 
+// @route   GET api/auth/login
+// @desc    Verify auth token
+// @access  ptivate
 router.get("/", auth, (req, res) => {
   try {
     res.json(req.client);

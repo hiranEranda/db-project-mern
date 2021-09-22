@@ -12,6 +12,7 @@ import AdminHome from "./components/admin/AdminHome";
 import AllComplaints from "./components/admin/AllComplaints";
 import Sellers from "./components/admin/Sellers";
 import AdLogin from "./components/admin/AdLogin";
+import Seller from "./components/admin/Seller";
 
 function App() {
   const [authState, setAuthState] = useState({
@@ -61,6 +62,11 @@ function App() {
                 exact
                 path="/admin/sellers"
                 component={() => <Sellers authorized={authState.status} />}
+              ></Route>
+              <Route
+                exact
+                path="/admin/seller"
+                component={() => <Seller authorized={authState.status} />}
               ></Route>
               <Route exact path="/" component={Home}></Route>
               <Route

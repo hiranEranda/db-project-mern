@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { DeleteIdContext, IdContext } from "./Seller";
+import { DeleteIdContext, IdContext } from "./AllComplaints";
 import axios from "axios";
 
-function SellerComplaints({ authorized }) {
+function AdViewComplaint({ authorized }) {
   const complaint_id = useContext(IdContext);
   const delete_id = useContext(DeleteIdContext);
   const [complaints, setcomplaints] = useState([]);
@@ -124,4 +124,4 @@ function SellerComplaints({ authorized }) {
   );
 }
 
-export default SellerComplaints;
+export default AdViewComplaint;

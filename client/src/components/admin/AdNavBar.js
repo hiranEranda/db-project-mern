@@ -34,6 +34,11 @@ function AdNavBar() {
                     Welcome {authState.username}
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/admin" className="nav-link">
+                    Home
+                  </Link>
+                </li>
                 <li className="nav-item" onClick={logOut}>
                   <Link to="/" className="nav-link">
                     Log out
@@ -44,7 +49,7 @@ function AdNavBar() {
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
                   <Link to="/" className="nav-link">
-                    Home
+                    Client area
                   </Link>
                 </li>
               </ul>

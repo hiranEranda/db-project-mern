@@ -64,11 +64,6 @@ function AppNavBar() {
               </ul>
             ) : (
               <ul className="navbar-nav mr-auto">
-                {/* <li className="nav-item">
-                  <Link to="/login" className="nav-link">
-                    Log in
-                  </Link>
-                </li> */}
                 <li className="nav-item">
                   <Link
                     type="button"

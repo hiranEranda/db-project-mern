@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import AdNavBar from "./AdNavBar";
+import AdViewComplaint from "./AdViewComplaint";
 
 export const IdContext = React.createContext();
 export const DeleteIdContext = React.createContext();
@@ -21,9 +22,6 @@ function AllComplaints({ authorized }) {
         setcomplaints(res.data);
       })
       .catch((e) => console.log(e));
-    return () => {
-      axios.get(`http://localhost:5000/api/admin/allcomplaints`);
-    };
   }, [deleteid.id]);
 
   const view = (val) => {
@@ -32,14 +30,15 @@ function AllComplaints({ authorized }) {
 
   const del = (val) => {
     setdeleteid({ id: val });
-    // axios
-    //   .delete(`http://localhost:5000/api/complaints/deletecomplaint/${val}`, {
-    //     headers: { authToken: sessionStorage.getItem("authToken") },
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //   })
-    //   .catch((e) => console.log(e.message));
+    console.log(val);
+    axios
+      .delete(`http://localhost:5000/api/admin/deletecomplaint/${val}`, {
+        headers: { authToken: sessionStorage.getItem("authToken") },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((e) => console.log(e.message));
   };
 
   if (!authorized) {
@@ -54,50 +53,70 @@ function AllComplaints({ authorized }) {
     <>
       <AdNavBar />
       <div className="container">
-        <h2>Recent Complaints</h2>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive-sm">
-              <table className="table table-bordred table-striped table-fixed">
-                <tbody>
-                  <tr>
-                    <th>Subject</th>
-                    <th>Consumer's Name</th>
-                    <th>Seller's Name</th>
-                    <th>Date</th>
-                    <th>Details</th>
-                    <th>Delete</th>
-                  </tr>
-                  {complaints.map((complaint) => (
-                    <tr key={complaint.complaint_id}>
-                      <td>{complaint.subject}</td>
-                      <td>
-                        {complaint.uFname} {complaint.uLname}
-                      </td>
-                      <td>
-                        {complaint.sFname} {complaint.sLname}
-                      </td>
-                      <td>{complaint.complaint_date}</td>
-                      <td className="text-center">
-                        <div className="h5">
-                          <i
-                            className="bi bi-arrow-right-square-fill"
-                            onClick={() => view(complaint.complaint_id)}
-                          ></i>
-                        </div>
-                      </td>
-                      <td className="text-center">
-                        <div className="h5 ">
-                          <i
-                            className="bi bi-trash-fill"
-                            onClick={() => del(complaint.complaint_id)}
-                          ></i>
-                        </div>
-                      </td>
+        <h2 id="header" className="text-center">
+          Recent Complaints
+        </h2>
+        <hr />
+        <div className="container mb-5">
+          <DeleteIdContext.Provider value={deleteid.id}>
+            <IdContext.Provider value={viewid.id}>
+              <AdViewComplaint />
+            </IdContext.Provider>
+          </DeleteIdContext.Provider>
+        </div>
+
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="table-responsive-sm">
+                <table
+                  id="table"
+                  className="table table-bordered table-light table-hover border-secondary"
+                >
+                  <tbody>
+                    <tr>
+                      <th className="text-center">Subject</th>
+                      <th className="text-center">Consumer's Name</th>
+                      <th className="text-center">Seller's Name</th>
+                      <th className="text-center">Date</th>
+                      <th className="text-center">Details</th>
+                      <th className="text-center">Delete</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                    {complaints.map((complaint) => (
+                      <tr key={complaint.complaint_id}>
+                        <td className="text-center">{complaint.subject}</td>
+                        <td className="text-center">
+                          {complaint.uFname} {complaint.uLname}
+                        </td>
+                        <td className="text-center">
+                          {complaint.sFname} {complaint.sLname}
+                        </td>
+                        <td className="text-center">
+                          {complaint.complaint_date}
+                        </td>
+                        <td className="text-center">
+                          <div className="h5">
+                            <a href="#header">
+                              <i
+                                className="bi bi-arrow-right-square-fill"
+                                onClick={() => view(complaint.complaint_id)}
+                              ></i>
+                            </a>
+                          </div>
+                        </td>
+                        <td className="text-center">
+                          <div className="h5 ">
+                            <i
+                              className="bi bi-trash-fill"
+                              onClick={() => del(complaint.complaint_id)}
+                            ></i>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

@@ -57,6 +57,24 @@ router.get("/allcomplaints", auth, async (req, res) => {
   }
 });
 
+// @route   GET api/admin/clientcomplaints
+// @desc    Get a clients complaints
+// @access  Private
+router.get("/clientcomplaints", auth, async (req, res) => {
+  console.log("admin - clientcomplaints");
+  let client_id = req.client.id;
+  try {
+    let data = await dbOperations.getClientComplaints(client_id);
+    data.map((item) => {
+      item.complaint_date = item.complaint_date.toISOString().split("T")[0];
+      return item;
+    });
+    res.send(data);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
 // @route   GET api/admin/viewcomplaint/complaint_id
 // @desc    View a complaint
 // @access  Private
@@ -69,6 +87,20 @@ router.get("/viewcomplaint/:complaint_id", auth, async (req, res) => {
       item.complaint_date = item.complaint_date.toISOString().split("T")[0];
       return item;
     });
+    res.send(data);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
+// @route   DELETE api/admin/deletecomplaint
+// @desc    get sellers
+// @access  Private
+router.delete("/deletecomplaint/:id", auth, async (req, res) => {
+  console.log("admin - Delete complaint");
+  const id = req.params.id;
+  try {
+    let data = await dbOperations.AdDeleteComplaint(id);
     res.send(data);
   } catch (e) {
     res.send(e.message);

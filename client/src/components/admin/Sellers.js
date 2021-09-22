@@ -5,7 +5,6 @@ import AdNavBar from "./AdNavBar";
 
 function Sellers({ authorized }) {
   const [sellers, setSellers] = useState([]);
-  const [deleteid, setdeleteid] = useState({ id: 100000000 });
   const [viewid, setviewid] = useState({ id: 0 });
 
   useEffect(() => {
@@ -23,18 +22,6 @@ function Sellers({ authorized }) {
     setviewid({ id: val });
   };
 
-  const del = (val) => {
-    setdeleteid({ id: val });
-    // axios
-    //   .delete(`http://localhost:5000/api/sellers/deletecomplaint/${val}`, {
-    //     headers: { authToken: sessionStorage.getItem("authToken") },
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //   })
-    //   .catch((e) => console.log(e.message));
-  };
-
   if (!authorized) {
     return (
       <>
@@ -47,37 +34,54 @@ function Sellers({ authorized }) {
     <>
       <AdNavBar />
       <div className="container">
-        <h2>Sellers</h2>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive-sm">
-              <table className="table table-bordred table-striped table-fixed">
-                <tbody>
-                  <tr>
-                    <th>Seller ID</th>
-                    <th>Seller Name</th>
-                    <th>Total Complaints</th>
-                    <th>Details</th>
-                  </tr>
-                  {sellers.map((seller) => (
-                    <tr key={seller.seller_id}>
-                      <td>{seller.seller_id}</td>
-                      <td>
-                        {seller.sFname} {seller.sLname}
-                      </td>
-                      <td>{seller.TotalCount}</td>
-                      <td className="text-center">
-                        <div className="h5">
-                          <i
-                            className="bi bi-arrow-right-square-fill"
-                            onClick={() => view(seller.seller_id)}
-                          ></i>
-                        </div>
-                      </td>
+        <h2 className="text-center m-4">Sellers</h2>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="table-responsive-sm">
+                <table className="table table-bordered table-light border-primary">
+                  <tbody>
+                    <tr>
+                      <th className="text-center bg-secondary">Seller ID</th>
+                      <th className="text-center bg-secondary">Seller Name</th>
+                      <th className="text-center bg-secondary">
+                        Total Complaints
+                      </th>
+                      <th className="text-center bg-secondary">Details</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                    {sellers.map((seller) => (
+                      <tr key={seller.seller_id}>
+                        <td className="text-center">{seller.seller_id}</td>
+                        <td className="text-center">
+                          {seller.sFname} {seller.sLname}
+                        </td>
+                        <td className="text-center">{seller.TotalCount}</td>
+                        <td
+                          className={
+                            seller.TotalCount > 20
+                              ? "text-center bg-danger"
+                              : seller.TotalCount > 5
+                              ? "text-center bg-warning"
+                              : "text-center bg-primary"
+                          }
+                        >
+                          <div className="h5">
+                            <a
+                              href="/admin/seller"
+                              style={{ color: "inherit" }}
+                            >
+                              <i
+                                className="bi bi-arrow-right-square-fill boder-dark"
+                                onClick={() => view(seller.seller_id)}
+                              ></i>
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
