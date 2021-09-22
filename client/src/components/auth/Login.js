@@ -9,7 +9,6 @@ function Login() {
   const { setAuthState } = useContext(AuthContext);
 
   const [state, setstate] = useState({ email: "", password: "" });
-  //const [err, seterr] = useState([]);
 
   const handleData = (e) => {
     setstate({

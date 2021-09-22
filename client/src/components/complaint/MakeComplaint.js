@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import "../../css/complaint.css";
 import axios from "axios";
+import AppNavBar from "../layouts/AppNavBar";
 
 function MakeComplaint({ authorized }) {
   const [complaint, setComplaint] = useState({
@@ -51,7 +52,8 @@ function MakeComplaint({ authorized }) {
     );
   }
   return (
-    <div>
+    <>
+      <AppNavBar />
       <div className="container">
         <h3 className="pt-2  text-center">File your complaint here</h3>
         <hr />
@@ -123,7 +125,7 @@ function MakeComplaint({ authorized }) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

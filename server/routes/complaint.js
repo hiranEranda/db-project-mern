@@ -27,6 +27,11 @@ router.get("/mycomplaints", auth, async (req, res) => {
   let id = req.client.id;
   try {
     let data = await dbOperations.getMyComplaints(id);
+
+    data.map((item) => {
+      item.complaint_date = item.complaint_date.toISOString().split("T")[0];
+      return item;
+    });
     res.send(data);
   } catch (e) {
     console.log(e.message);
@@ -41,6 +46,10 @@ router.get("/viewcomplaint/:complaint_id", auth, async (req, res) => {
   let id = req.params.complaint_id;
   try {
     let data = await dbOperations.viewComplaint(id);
+    data.map((item) => {
+      item.complaint_date = item.complaint_date.toISOString().split("T")[0];
+      return item;
+    });
     res.send(data);
   } catch (e) {
     console.log(e.message);

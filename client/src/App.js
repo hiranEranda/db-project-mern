@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import AppNavBar from "./components/layouts/AppNavBar";
 import Home from "./components/layouts/Home";
 import MakeComplaint from "./components/complaint/MakeComplaint";
 import MyComplaints from "./components/complaint/MyComplaints";
@@ -9,6 +8,10 @@ import { AuthContext } from "./helpers/AuthContext";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import AdminHome from "./components/admin/AdminHome";
+import AllComplaints from "./components/admin/AllComplaints";
+import Sellers from "./components/admin/Sellers";
+import AdLogin from "./components/admin/AdLogin";
 
 function App() {
   const [authState, setAuthState] = useState({
@@ -28,7 +31,7 @@ function App() {
         } else {
           setAuthState({
             username: res.data.username,
-            id: res.data.username,
+            id: res.data.id,
             status: true,
           });
         }
@@ -40,8 +43,25 @@ function App() {
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
           <div className="App">
-            <AppNavBar />
             <Switch>
+              <Route exact path="/admin/login" component={AdLogin}></Route>
+              <Route
+                exact
+                path="/admin"
+                component={() => <AdminHome authorized={authState.status} />}
+              ></Route>
+              <Route
+                exact
+                path="/admin/complaints"
+                component={() => (
+                  <AllComplaints authorized={authState.status} />
+                )}
+              ></Route>
+              <Route
+                exact
+                path="/admin/sellers"
+                component={() => <Sellers authorized={authState.status} />}
+              ></Route>
               <Route exact path="/" component={Home}></Route>
               <Route
                 exact

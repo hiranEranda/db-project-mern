@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import DeleteIcon from "@material-ui/icons/Delete";
-import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
-import { IconButton } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import ViewComplaint from "./ViewComplaint";
 import { HashLoader } from "react-spinners";
+import AppNavBar from "../layouts/AppNavBar";
 
 export const IdContext = React.createContext();
 export const DeleteIdContext = React.createContext();
@@ -55,10 +52,8 @@ function MyComplaints({ authorized }) {
       })
       .then((res) => {
         console.log(res.data);
-
-        // window.location.reload();
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e.message));
   };
 
   if (!authorized) {
@@ -71,6 +66,7 @@ function MyComplaints({ authorized }) {
   }
   return (
     <>
+      <AppNavBar />
       <div className="container">
         <h3 className="pt-2  text-center">Recent Complaints</h3>
         <hr className="mb-4" />

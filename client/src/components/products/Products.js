@@ -24,17 +24,6 @@ function Products() {
           <td className="text-center">{product.mrp}</td>
           <td className="text-center">{product.mrp_date}</td>
         </tr>
-        // <div className="row text-center" key={product.product_id}>
-        //   <div className="col-md">
-        //     {product.name} {product.mrp} {product.mrp_date}
-        //   </div>
-        //   <div className="col-md">
-        //     {product.name} {product.mrp} {product.mrp_date}
-        //   </div>
-        //   <div className="col-md">
-        //     {product.name} {product.mrp} {product.mrp_date}
-        //   </div>
-        // </div>
       ))}
     </>
   );

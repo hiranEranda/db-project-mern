@@ -8,7 +8,7 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-// log in
+// client log in
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -94,7 +94,11 @@ router.post("/reg", async (req, res) => {
 });
 
 router.get("/", auth, (req, res) => {
-  res.json(req.client);
+  try {
+    res.json(req.client);
+  } catch (e) {
+    res.send("token auth " + e.message);
+  }
 });
 
 module.exports = router;

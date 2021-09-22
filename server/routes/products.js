@@ -1,6 +1,5 @@
 const express = require("express");
 const dbOperations = require("../controllers/dbOperations");
-const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -8,6 +7,10 @@ const router = express.Router();
 router.get("/all", async (req, res) => {
   try {
     let data = await dbOperations.getAll();
+    data.map((item) => {
+      item.mrp_date = item.mrp_date.toISOString().split("T")[0];
+      return item;
+    });
     res.send(data);
   } catch (e) {
     console.log(e.message);
@@ -20,8 +23,11 @@ router.get("/:type", async (req, res) => {
   console.log("filter function and type rec: " + type);
   try {
     let data = await dbOperations.filterByType(type);
+    data.map((item) => {
+      item.mrp_date = item.mrp_date.toISOString().split("T")[0];
+      return item;
+    });
     res.send(data);
-    console.log(data);
   } catch (e) {
     console.log(e.message);
   }

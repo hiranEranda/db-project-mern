@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../helpers/AuthContext";
 import Login from "../auth/Login";
-import Register from "../auth/Register";
 
 function AppNavBar() {
   const { authState, setAuthState } = useContext(AuthContext);
@@ -77,23 +76,12 @@ function AppNavBar() {
                     data-bs-target="#loginModal"
                     className="nav-link"
                   >
-                    Log in
+                    USER-Login
                   </Link>
                 </li>
-
-                {/* <li className="nav-item">
-                  <Link to="/register" className="nav-link">
-                    Register
-                  </Link>
-                </li> */}
                 <li className="nav-item">
-                  <Link
-                    type="button"
-                    data-bs-toggle="modal"
-                    data-bs-target="#registerModal"
-                    className="nav-link"
-                  >
-                    Register
+                  <Link to="/admin/login" className="nav-link">
+                    ADMIN-Login
                   </Link>
                 </li>
               </ul>
@@ -126,37 +114,6 @@ function AppNavBar() {
               <div className="modal-body">
                 <p className="lead">Enter your Credentials to log in</p>
                 <Login />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ----------------------------------------------------------------------------------------------------- */}
-      {/* Register Modal */}
-      <div className="">
-        <div
-          className="modal fade"
-          id="registerModal"
-          aria-labelledby="registerModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="registerModalLabel">
-                  Register
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <p className="lead">Enter your details to register</p>
-                <Register />
               </div>
             </div>
           </div>

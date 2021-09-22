@@ -11,7 +11,7 @@ db.connect((error) => {
 });
 
 //-------------------------------------------------auth-------------------------------------------------
-// login
+// client login
 function getClient(email) {
   return new Promise((resolve, reject) => {
     console.log("getClient called");
@@ -26,7 +26,7 @@ function getClient(email) {
   });
 }
 
-// login
+// register
 function regClient(client) {
   return new Promise((resolve, reject) => {
     console.log("regClient called");
@@ -73,18 +73,18 @@ function filterByType(type) {
   });
 }
 
-//-------------------------------------------------Seller-------------------------------------------------
-// get a seller
-function getSeller(id) {
-  return new Promise((resolve, reject) => {
-    let sql = `SELECT * FROM seller WHERE seller_id='${id}'`;
-    db.query(sql, (error, results) => {
-      if (error) console.log(error.message);
-      resolve(results);
-      reject(new Error("from get seller"));
-    });
-  });
-}
+// //-------------------------------------------------Seller-------------------------------------------------
+// // get a seller
+// function getSeller(id) {
+//   return new Promise((resolve, reject) => {
+//     let sql = `SELECT * FROM seller WHERE seller_id='${id}'`;
+//     db.query(sql, (error, results) => {
+//       if (error) console.log(error.message);
+//       resolve(results);
+//       reject(new Error("from get seller"));
+//     });
+//   });
+// }
 
 //-------------------------------------------------Complaints-------------------------------------------------
 // getMyComplaints
@@ -152,7 +152,7 @@ function viewComplaint(complaint_id) {
     db.query(sql, (error, results) => {
       if (error) console.log(error.message);
       resolve(results);
-      reject(new Error("from getMyComplaints"));
+      reject(new Error("from view Complaints"));
     });
   });
 }
@@ -171,12 +171,96 @@ function deleteComplaint(complaint_id) {
   });
 }
 
+//-------------------------------------------------Admin-------------------------------------------------
+// admin login
+function getAdmin(admin) {
+  return new Promise((resolve, reject) => {
+    console.log("getAdmin called");
+    let sql = `SELECT * FROM Admin
+                        WHERE admin_name = '${admin}'
+                        LIMIT 1`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from get admin"));
+    });
+  });
+}
+
+// getAllComplaints
+function getAllComplaints() {
+  return new Promise((resolve, reject) => {
+    let sql = `SELECT subject, con.uFname, con.uLname, s.sFname, s.sLname, complaint_date, complaint_id FROM complaint as com
+                JOIN seller as s
+                ON com.seller_id = s.seller_id
+                JOIN consumers as con
+                ON com.consumer_id = con.consumer_id
+                ORDER BY complaint_id DESC`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from getAllComplaints"));
+    });
+  });
+}
+
+// view a complaint
+function AdViewComplaint(complaint_id) {
+  return new Promise((resolve, reject) => {
+    sql = `SELECT * FROM complaint as com
+                JOIN seller as s
+                ON com.seller_id = s.seller_id
+                JOIN consumers as con
+                ON com.consumer_id = con.consumer_id
+                JOIN market as m
+                ON s.market_id = m.market_id    
+                WHERE complaint_id = ${complaint_id}`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from admin view Complaints"));
+    });
+  });
+}
+
+// delete a complaint
+function AdDeleteComplaint(complaint_id) {
+  return new Promise((resolve, reject) => {
+    sql = `DELETE FROM complaint 
+                WHERE complaint_id = ${complaint_id} LIMIT 1`;
+    db.query(sql, (error, result) => {
+      if (error) console.log(error.message);
+      resolve(result);
+      reject(new Error("from admin deleteComplaints"));
+    });
+  });
+}
+
+// get Sellers
+function getSellers(complaint_id) {
+  return new Promise((resolve, reject) => {
+    sql = `SELECT  COUNT(*) TotalCount, complaint_id, s.sFname, s.sLname, s.seller_id
+            FROM complaint c
+            JOIN seller s
+            ON c.seller_id = s.seller_id 
+            GROUP BY s.seller_id
+            ORDER BY TotalCount DESC`;
+    db.query(sql, (error, result) => {
+      if (error) console.log(error.message);
+      resolve(result);
+      reject(new Error("from admin getSellers"));
+    });
+  });
+}
+
 module.exports = {
+  //admin
+  getAdmin: getAdmin,
   //methods of products
   getAll: getAll,
   filterByType: filterByType,
-  //methods of sellers
-  getSeller: getSeller,
+  // methods of sellers
+  // getSeller: getSeller,
   //methods of complaint
   addComplaints: addComplaints,
   getMyComplaints: getMyComplaints,
@@ -185,4 +269,9 @@ module.exports = {
   //auth
   getClient: getClient,
   regClient: regClient,
+  //admin
+  getAllComplaints: getAllComplaints,
+  AdViewComplaint: AdViewComplaint,
+  AdDeleteComplaint: AdDeleteComplaint,
+  getSellers: getSellers,
 };
