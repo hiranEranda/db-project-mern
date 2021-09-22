@@ -5,8 +5,6 @@ import Home from "./components/layouts/Home";
 import MakeComplaint from "./components/complaint/MakeComplaint";
 import MyComplaints from "./components/complaint/MyComplaints";
 
-import Login from "./components/layouts/Login";
-import Register from "./components/layouts/Register";
 import { AuthContext } from "./helpers/AuthContext";
 
 import { useState, useEffect } from "react";
@@ -43,27 +41,21 @@ function App() {
         <Router>
           <div className="App">
             <AppNavBar />
-            <div className="container">
-              <Switch>
-                <Route exact path="/login" component={Login}></Route>
-                <Route exact path="/register" component={Register}></Route>
-                <Route exact path="/" component={Home}></Route>
-                <Route
-                  exact
-                  path="/makecomplaint"
-                  component={() => (
-                    <MakeComplaint authorized={authState.status} />
-                  )}
-                ></Route>
-                <Route
-                  exact
-                  path="/mycomplaints"
-                  component={() => (
-                    <MyComplaints authorized={authState.status} />
-                  )}
-                ></Route>
-              </Switch>
-            </div>
+            <Switch>
+              <Route exact path="/" component={Home}></Route>
+              <Route
+                exact
+                path="/makecomplaint"
+                component={() => (
+                  <MakeComplaint authorized={authState.status} />
+                )}
+              ></Route>
+              <Route
+                exact
+                path="/mycomplaints"
+                component={() => <MyComplaints authorized={authState.status} />}
+              ></Route>
+            </Switch>
           </div>
         </Router>
       </AuthContext.Provider>

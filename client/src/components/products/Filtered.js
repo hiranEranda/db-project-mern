@@ -23,9 +23,9 @@ function Filtered() {
     <>
       {filter.map((product) => (
         <tr key={product.product_id}>
-          <td>{product.name}</td>
-          <td>{product.mrp}</td>
-          <td>{product.mrp_date}</td>
+          <td className="text-center">{product.name}</td>
+          <td className="text-center">{product.mrp}</td>
+          <td className="text-center">{product.mrp_date}</td>
         </tr>
       ))}
     </>

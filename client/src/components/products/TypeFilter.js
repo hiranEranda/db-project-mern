@@ -14,6 +14,8 @@ export default function TypeFilter() {
   const [type, setType] = useState(initType);
 
   const handleChange = (event) => {
+    event.preventDefault();
+    window.location.hash = "prices";
     setType(event.target.value);
   };
   return (
@@ -33,7 +35,7 @@ export default function TypeFilter() {
       <br />
 
       <TypeContext.Provider value={type}>
-        <Bridge />
+        <Bridge id="prices" />
       </TypeContext.Provider>
     </div>
   );

@@ -62,24 +62,30 @@ function MyComplaints({ authorized }) {
   };
 
   if (!authorized) {
-    return <Redirect to="/login" />;
+    return (
+      <>
+        {alert("You have to be logged in first")}
+        <Redirect to="/" />
+      </>
+    );
   }
   return (
     <>
       <div className="container">
-        <h2>Recent Complaints</h2>
+        <h3 className="pt-2  text-center">Recent Complaints</h3>
+        <hr className="mb-4" />
         {spinner ? (
           <div className="cliploader-div d-flex justify-content-center align-items-center">
             <HashLoader size={80} color={"0f0"} />\
           </div>
         ) : null}
         <div style={{ display: show ? "block" : "none" }}>
-          <Grid container>
-            <Grid item xs={6}>
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="table-responsive">
-                    <table className="table table-bordred table-striped">
+          <div className="container">
+            <div className="row">
+              <div className="col-7">
+                <div className="overflow-auto" style={{ height: 480.0 }}>
+                  <div className="table-responsive-sm">
+                    <table className="table table-bordred table-striped table-fixed">
                       <tbody>
                         <tr>
                           <th>Subject</th>
@@ -95,25 +101,22 @@ function MyComplaints({ authorized }) {
                               {complaint.sFname} {complaint.sLname}
                             </td>
                             <td>{complaint.complaint_date}</td>
-                            <td>
-                              <Grid item xs={8}>
-                                <IconButton
-                                  color="primary"
+                            <td className="text-center">
+                              <div className="h5">
+                                {" "}
+                                <i
+                                  className="bi bi-arrow-right-square-fill"
                                   onClick={() => view(complaint.complaint_id)}
-                                >
-                                  <DoubleArrowIcon />
-                                </IconButton>
-                              </Grid>
+                                ></i>
+                              </div>
                             </td>
-                            <td>
-                              <Grid item xs={8}>
-                                <IconButton
-                                  color="primary"
+                            <td className="text-center">
+                              <div className="h5 ">
+                                <i
+                                  className="bi bi-trash-fill"
                                   onClick={() => del(complaint.complaint_id)}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Grid>
+                                ></i>
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -122,15 +125,22 @@ function MyComplaints({ authorized }) {
                   </div>
                 </div>
               </div>
-            </Grid>
-            <Grid item xs={6}>
-              <DeleteIdContext.Provider value={deleteid.id}>
-                <IdContext.Provider value={viewid.id}>
-                  <ViewComplaint />
-                </IdContext.Provider>
-              </DeleteIdContext.Provider>
-            </Grid>
-          </Grid>
+              <div className="col-5 align-items-center">
+                <div className="card border-secondary">
+                  <div className="card-body">
+                    <h4 className="card-title mb-3">Complaint Details</h4>
+                    <div className="card-text">
+                      <DeleteIdContext.Provider value={deleteid.id}>
+                        <IdContext.Provider value={viewid.id}>
+                          <ViewComplaint />
+                        </IdContext.Provider>
+                      </DeleteIdContext.Provider>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

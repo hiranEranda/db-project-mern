@@ -25,7 +25,7 @@ router.post("/login", async (req, res) => {
               if (err) return console.log(err.message);
               res.json({
                 token,
-                username: user[0].uFname,
+                username: user[0].uFname + " " + user[0].uLname,
                 id: user[0].consumer_id,
               });
             }
@@ -40,44 +40,56 @@ router.post("/login", async (req, res) => {
 
 // register
 router.post("/reg", async (req, res) => {
-  const schema = Joi.object({
-    fname: Joi.string().min(3).required(),
-    lname: Joi.string().min(3).required(),
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
-    }),
-    password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
-  });
-
+  console.log("register server called");
   try {
-    const value = await schema.validateAsync(req.body);
-    let { password, email } = value;
-
+    const schema = Joi.object({
+      nic: Joi.string().min(3).required(),
+      fname: Joi.string().min(3).required(),
+      lname: Joi.string().min(3).required(),
+      email: Joi.string().email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      }),
+      password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+      address: Joi.string().min(3).required(),
+      phone: Joi.string().min(3).required(),
+    });
     try {
-      const user = await dbOperations.getClient(email);
-      if (user.length === 1) res.send("email already exists");
-      else {
-        const client = {
-          ...value,
-          password: await bcrypt.hash(password, 10),
-        };
-        const reg = await dbOperations.regClient(client);
-        const newUser = await dbOperations.getClient(email);
-        jwt.sign(
-          { id: newUser[0].consumer_id, username: newUser[0].uFname },
-          config.get("jwtPrivateKey"),
-          (err, token) => {
-            if (err) return console.log(err.message);
-            res.json({ token, msg: "user registered" });
-          }
-        );
+      console.log("second try block");
+      const value = await schema.validateAsync(req.body);
+      let { password, email } = value;
+
+      try {
+        const user = await dbOperations.getClient(email);
+        if (user.length === 1) res.send("email already exists");
+        else {
+          const client = {
+            ...value,
+            password: await bcrypt.hash(password, 10),
+          };
+          const reg = await dbOperations.regClient(client);
+          const newUser = await dbOperations.getClient(email);
+          jwt.sign(
+            { id: newUser[0].consumer_id, username: newUser[0].uFname },
+            config.get("jwtPrivateKey"),
+            (err, token) => {
+              if (err) return console.log(err.message);
+              res.json({
+                token,
+                username: user[0].uFname + " " + user[0].uLname,
+                id: user[0].consumer_id,
+              });
+            }
+          );
+        }
+      } catch (err) {
+        res.send("Registering to database " + err.message);
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      res.send("Schema validation " + err.message);
     }
   } catch (err) {
-    res.send(err.message);
+    res.send("Schema " + err.message);
   }
 });
 

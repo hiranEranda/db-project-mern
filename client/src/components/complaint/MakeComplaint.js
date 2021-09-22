@@ -30,63 +30,98 @@ function MakeComplaint({ authorized }) {
       })
       .then((res) => {
         console.log(res.status);
+        setComplaint({
+          subject: "",
+          description: "",
+          product: "",
+          seller: "",
+          seller_r_p: "",
+        });
         alert("complaint filed");
       })
       .catch((e) => console.log(e));
   };
 
   if (!authorized) {
-    return <Redirect to="/login" />;
+    return (
+      <>
+        {alert("You have to be logged in first")}
+        <Redirect to="/" />
+      </>
+    );
   }
   return (
     <div>
       <div className="container">
-        <form onSubmit={formHandler}>
-          <div className="col-md-12">
-            <h3>Complaint</h3>
-            <hr />
+        <h3 className="pt-2  text-center">File your complaint here</h3>
+        <hr />
+        <div className="d-flex justify-content-center">
+          <div className="card w-50 border-secondary">
+            <div className="card-body">
+              <form onSubmit={formHandler}>
+                <div className="mb-1">
+                  <label className="col-form-label">
+                    Select the most suitable reason
+                  </label>
+                  <select
+                    name="subject"
+                    className="form-control"
+                    value={complaint.subject}
+                    onChange={handleData}
+                  >
+                    <option name="1">Item over priced</option>
+                    <option name="2">Products are not in good quality</option>
+                  </select>
+                </div>
+                <div className="mb-1">
+                  <label className="col-form-label">Description</label>
+                  <input
+                    type="text"
+                    name="description"
+                    className="form-control"
+                    value={complaint.description}
+                    onChange={handleData}
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="col-form-label">Product</label>
+                  <input
+                    type="text"
+                    name="product"
+                    className="form-control"
+                    value={complaint.product}
+                    onChange={handleData}
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="col-form-label">Seller ID</label>
+                  <input
+                    type="text"
+                    name="seller"
+                    className="form-control"
+                    value={complaint.seller}
+                    onChange={handleData}
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="col-form-label">Sellers Retail Price</label>
+                  <input
+                    type="text"
+                    name="seller_r_p"
+                    className="form-control"
+                    value={complaint.seller_r_p}
+                    onChange={handleData}
+                  />
+                </div>
+                <div className="mt-3">
+                  <button type="submit" className="btn btn-primary float-end">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-          <select
-            name="subject"
-            value={complaint.subject}
-            onChange={handleData}
-          >
-            <option name="1">Item over priced</option>
-            <option name="2">Products are not in good quality</option>
-          </select>
-          <input
-            type="text"
-            name="description"
-            value={complaint.description}
-            placeholder="Description"
-            onChange={handleData}
-          />
-          <input
-            type="text"
-            name="product"
-            value={complaint.product}
-            placeholder="Product"
-            onChange={handleData}
-          />
-          <input
-            type="text"
-            name="seller"
-            value={complaint.seller}
-            placeholder="Seller ID"
-            onChange={handleData}
-          />
-          <input
-            type="text"
-            name="seller_r_p"
-            value={complaint.seller_r_p}
-            placeholder="Seller's retail price"
-            onChange={handleData}
-          />
-
-          <Button variant="contained" color="primary" type="submit">
-            Submit
-          </Button>
-        </form>
+        </div>
       </div>
     </div>
   );

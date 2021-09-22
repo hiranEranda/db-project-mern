@@ -30,10 +30,10 @@ function getClient(email) {
 function regClient(client) {
   return new Promise((resolve, reject) => {
     console.log("regClient called");
-    const { fname, lname, email, password } = client;
+    const { fname, lname, email, password, nic, address, phone } = client;
 
-    let sql = `INSERT INTO Consumers (uFname, uLname, email, password)
-                        VALUES ('${fname}', '${lname}', '${email}', '${password}')`;
+    let sql = `INSERT INTO Consumers (nic, uFname, uLname, email, password, address, phone_number)
+                        VALUES ('${nic}', '${fname}', '${lname}', '${email}', '${password}','${address}','${phone}')`;
     db.query(sql, (error, results) => {
       if (error) console.log(error.message);
       resolve(results);
@@ -126,12 +126,13 @@ function getMaxPrice(product) {
 // addComplaints
 function addComplaints(details) {
   return new Promise(async (resolve, reject) => {
-    let { subject, description, product, seller_r_p, seller } = details;
+    let { subject, description, product, seller_r_p, seller, client_id } =
+      details;
 
     let max_price = await getMaxPrice(product);
 
     let sql = `INSERT INTO complaint(subject, description, product, max_price, sellers_retail_price, seller_id, consumer_id, is_deleted)
-              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller}', 1, 0)`;
+              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller}', ${client_id}, 0)`;
     db.query(sql, (error, results) => {
       if (error) {
         console.log(error.message);

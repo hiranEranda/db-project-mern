@@ -8,12 +8,12 @@ function Bridge() {
   const type = useContext(TypeContext);
   return (
     <>
-      <table className="table table-bordred table-striped">
+      <table className="table bg-light table-hover table-bordred border-primary">
         <tbody>
           <tr>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Date</th>
+            <th className="text-center">Product Name</th>
+            <th className="text-center">Price</th>
+            <th className="text-center">Date</th>
           </tr>
           {type === "all" ? <Products /> : <Filtered />}
         </tbody>
