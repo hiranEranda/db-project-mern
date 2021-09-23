@@ -10,8 +10,8 @@ export const DeleteIdContext = React.createContext();
 function AllComplaints({ authorized }) {
   const [complaints, setcomplaints] = useState([]);
 
-  const [deleteid, setdeleteid] = useState({ id: 100000000 });
-  const [viewid, setviewid] = useState({ id: 0 });
+  const [deleteid, setDeleteid] = useState({ id: 100000000 });
+  const [viewid, setViewid] = useState({ id: 0 });
 
   useEffect(() => {
     axios
@@ -25,11 +25,11 @@ function AllComplaints({ authorized }) {
   }, [deleteid.id]);
 
   const view = (val) => {
-    setviewid({ id: val });
+    setViewid({ id: val });
   };
 
   const del = (val) => {
-    setdeleteid({ id: val });
+    setDeleteid({ id: val });
     console.log(val);
     axios
       .delete(`http://localhost:5000/api/admin/deletecomplaint/${val}`, {
@@ -37,6 +37,7 @@ function AllComplaints({ authorized }) {
       })
       .then((res) => {
         console.log(res.data);
+        alert("Complaint deleted!");
       })
       .catch((e) => console.log(e.message));
   };

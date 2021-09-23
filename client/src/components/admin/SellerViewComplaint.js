@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
-import { DeleteIdContext, IdContext } from "./AllComplaints";
+import React, { useContext, useEffect, useState } from "react";
+import { DeleteIdContext, ViewIdContext } from "./Sellers";
 import axios from "axios";
 
-function AdViewComplaint({ authorized }) {
-  const complaint_id = useContext(IdContext);
+function SellerViewComplaint() {
+  const complaint_id = useContext(ViewIdContext);
   const delete_id = useContext(DeleteIdContext);
-  const [complaints, setcomplaints] = useState([]);
+  const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
     if (delete_id !== complaint_id) {
@@ -14,7 +14,7 @@ function AdViewComplaint({ authorized }) {
           headers: { authToken: sessionStorage.getItem("authToken") },
         })
         .then((res) => {
-          setcomplaints(res.data);
+          setComplaints(res.data);
           console.log(res.data);
         })
         .catch((e) => console.log(e));
@@ -23,7 +23,7 @@ function AdViewComplaint({ authorized }) {
 
   return (
     <div>
-      <div className="row">
+      <div className="row mb-3">
         <div className="col">
           <div className="card border-secondary">
             <div className="card-body">
@@ -59,35 +59,7 @@ function AdViewComplaint({ authorized }) {
             </div>
           </div>
         </div>
-        <div className="col">
-          <div className="card h-100 border-secondary ">
-            <div className="card-body">
-              <h4 className="card-header text-center mb-3">Seller Details</h4>
-              <div className="card-text">
-                {complaints.map((complaint) => (
-                  <div className="container" key={complaint.complaint_id}>
-                    <dl className="row">
-                      <dt className="col-sm-6">Seller ID</dt>
-                      <dd className="col-sm-6">{complaint.seller_id}</dd>
-                      <dt className="col-sm-6">NIC</dt>
-                      <dd className="col-sm-6"> {complaint.snic} </dd>
-                      <dt className="col-sm-6">Full Name</dt>
-                      <dd className="col-sm-6">
-                        {complaint.sFname} {complaint.sLname}
-                      </dd>
-                      <dt className="col-sm-6">Address</dt>
-                      <dd className="col-sm-6">{complaint.s_address} </dd>
-                      <dt className="col-sm-6">Phone Number</dt>
-                      <dd className="col-sm-6">{complaint.s_phone_number} </dd>
-                      <dt className="col-sm-6">Market Name</dt>
-                      <dd className="col-sm-6"> {complaint.name}</dd>
-                    </dl>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+
         <div className="col">
           <div className="card h-100 border-secondary ">
             <div className="card-body">
@@ -110,8 +82,8 @@ function AdViewComplaint({ authorized }) {
                       <dd className="col-sm-6">{complaint.address} </dd>
                       <dt className="col-sm-6">Phone Number</dt>
                       <dd className="col-sm-6">{complaint.phone_number} </dd>
-                      <dt className="col-sm-5">E-mail</dt>
-                      <dd className="col-sm-7"> {complaint.email}</dd>
+                      <dt className="col-sm-6">E-mail</dt>
+                      <dd className="col-sm-6"> {complaint.email}</dd>
                     </dl>
                   </div>
                 ))}
@@ -124,4 +96,4 @@ function AdViewComplaint({ authorized }) {
   );
 }
 
-export default AdViewComplaint;
+export default SellerViewComplaint;

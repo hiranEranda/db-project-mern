@@ -73,19 +73,6 @@ function filterByType(type) {
   });
 }
 
-// //-------------------------------------------------Seller-------------------------------------------------
-// // get a seller
-// function getSeller(id) {
-//   return new Promise((resolve, reject) => {
-//     let sql = `SELECT * FROM seller WHERE seller_id='${id}'`;
-//     db.query(sql, (error, results) => {
-//       if (error) console.log(error.message);
-//       resolve(results);
-//       reject(new Error("from get seller"));
-//     });
-//   });
-// }
-
 //-------------------------------------------------Complaints-------------------------------------------------
 // getMyComplaints
 function getMyComplaints(id) {
@@ -271,6 +258,41 @@ function getSellers(complaint_id) {
   });
 }
 
+// get a seller
+function getSeller(seller_id) {
+  return new Promise((resolve, reject) => {
+    let sql = `SELECT * FROM seller as s
+                JOIN complaint as com
+                ON com.seller_id = s.seller_id
+                JOIN market as m
+                ON s.market_id = m.market_id    
+                WHERE s.seller_id = '${seller_id}' LIMIT 1`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from get seller"));
+    });
+  });
+}
+
+// get a seller's complaints
+function getSellerComplaints(seller_id) {
+  return new Promise((resolve, reject) => {
+    let sql = `SELECT subject, con.uFname, con.uLname, s.sFname, s.sLname, complaint_date, complaint_id, s.seller_id FROM complaint as com
+                            JOIN seller as s
+                            ON com.seller_id = s.seller_id
+                            JOIN consumers as con
+                            ON com.consumer_id = con.consumer_id
+                            WHERE com.seller_id = '${seller_id}'
+                            ORDER BY complaint_id DESC`;
+    db.query(sql, (error, results) => {
+      if (error) console.log(error.message);
+      resolve(results);
+      reject(new Error("from get seller"));
+    });
+  });
+}
+
 module.exports = {
   //methods of products
   getAll: getAll,
@@ -290,6 +312,8 @@ module.exports = {
   getAllComplaints: getAllComplaints,
   AdViewComplaint: AdViewComplaint,
   AdDeleteComplaint: AdDeleteComplaint,
-  getSellers: getSellers,
   getClientComplaints: getClientComplaints,
+  getSellers: getSellers,
+  getSeller: getSeller,
+  getSellerComplaints: getSellerComplaints,
 };

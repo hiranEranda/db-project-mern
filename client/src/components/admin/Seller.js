@@ -1,117 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
-import AdNavBar from "./AdNavBar";
-import SellerComplaints from "./SellerComplaints";
+import { IdContext } from "./Sellers";
 
-export const IdContext = React.createContext();
-export const DeleteIdContext = React.createContext();
-
-function Seller({ authorized }) {
-  const [complaints, setcomplaints] = useState([]);
-
-  const [deleteid, setdeleteid] = useState({ id: 100000000 });
-  const [viewid, setviewid] = useState({ id: 0 });
-
+function Seller() {
+  let id = useContext(IdContext);
+  const [seller, setSeller] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/admin/allcomplaints`, {
+      .get(`http://localhost:5000/api/admin/seller/${id}`, {
         headers: { authToken: sessionStorage.getItem("authToken") },
       })
       .then((res) => {
-        setcomplaints(res.data);
-      })
-      .catch((e) => console.log(e));
-  }, [deleteid.id]);
-
-  const view = (val) => {
-    setviewid({ id: val });
-  };
-
-  const del = (val) => {
-    setdeleteid({ id: val });
-    console.log(val);
-    axios
-      .delete(`http://localhost:5000/api/admin/deletecomplaint/${val}`, {
-        headers: { authToken: sessionStorage.getItem("authToken") },
-      })
-      .then((res) => {
+        setSeller(res.data);
         console.log(res.data);
       })
-      .catch((e) => console.log(e.message));
-  };
+      .catch((e) => console.log(e));
+  }, [id]);
 
-  if (!authorized) {
-    return (
-      <>
-        {alert("Unauthorized Access Bloked")}
-        <Redirect to="/admin/login" />
-      </>
-    );
-  }
   return (
     <>
-      <AdNavBar />
       <div className="container">
-        <h2 id="header" className="text-center">
-          Recent Complaints
-        </h2>
-        <hr />
         <div className="container mb-5">
-          <DeleteIdContext.Provider value={deleteid.id}>
-            <IdContext.Provider value={viewid.id}>
-              <SellerComplaints />
-            </IdContext.Provider>
-          </DeleteIdContext.Provider>
-        </div>
-
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="table-responsive-sm">
-                <table
-                  id="table"
-                  className="table table-bordered table-light table-hover border-secondary"
-                >
-                  <tbody>
-                    <tr>
-                      <th className="text-center">Subject</th>
-                      <th className="text-center">Consumer's Name</th>
-                      <th className="text-center">Date</th>
-                      <th className="text-center">Details</th>
-                      <th className="text-center">Delete</th>
-                    </tr>
-                    {complaints.map((complaint) => (
-                      <tr key={complaint.complaint_id}>
-                        <td className="text-center">{complaint.subject}</td>
-                        <td className="text-center">
-                          {complaint.uFname} {complaint.uLname}
-                        </td>
-                        <td className="text-center">
-                          {complaint.complaint_date}
-                        </td>
-                        <td className="text-center">
-                          <div className="h5">
-                            <a href="#header">
-                              <i
-                                className="bi bi-arrow-right-square-fill"
-                                onClick={() => view(complaint.complaint_id)}
-                              ></i>
-                            </a>
-                          </div>
-                        </td>
-                        <td className="text-center">
-                          <div className="h5 ">
-                            <i
-                              className="bi bi-trash-fill"
-                              onClick={() => del(complaint.complaint_id)}
-                            ></i>
-                          </div>
-                        </td>
-                      </tr>
+          <div className="row d-flex justify-content-center">
+            <div className="col-7">
+              <div className="card border-secondary">
+                <div className="card-body">
+                  <h4 className="card-header text-center mb-3">
+                    Seller Details
+                  </h4>
+                  <div className="card-text">
+                    {seller.map((s) => (
+                      <div className="container" key={s.complaint_id}>
+                        <dl className="row">
+                          <dt className="col-sm-5">Seller ID</dt>
+                          <dd className="col-sm-7">{s.seller_id}</dd>
+                          <dt className="col-sm-5">NIC</dt>
+                          <dd className="col-sm-7"> {s.snic} </dd>
+                          <dt className="col-sm-5">Full Name</dt>
+                          <dd className="col-sm-7">
+                            {s.sFname} {s.sLname}
+                          </dd>
+                          <dt className="col-sm-5">Address</dt>
+                          <dd className="col-sm-7">{s.s_address} </dd>
+                          <dt className="col-sm-5">Phone Number</dt>
+                          <dd className="col-sm-7">{s.s_phone_number} </dd>
+                          <dt className="col-sm-5">Works At</dt>
+                          <dd className="col-sm-7"> {s.name}</dd>
+                        </dl>
+                      </div>
                     ))}
-                  </tbody>
-                </table>
+                  </div>
+                  <div className="card-text"></div>
+                </div>
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { DeleteIdContext, IdContext } from "./Seller";
 import axios from "axios";
 
-function SellerComplaints({ authorized }) {
+function SellerComplaints() {
   const complaint_id = useContext(IdContext);
   const delete_id = useContext(DeleteIdContext);
   const [complaints, setcomplaints] = useState([]);

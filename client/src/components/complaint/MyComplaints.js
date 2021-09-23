@@ -52,6 +52,7 @@ function MyComplaints({ authorized }) {
       })
       .then((res) => {
         console.log(res.data);
+        alert("Complaint deleted!");
       })
       .catch((e) => console.log(e.message));
   };
@@ -124,7 +125,9 @@ function MyComplaints({ authorized }) {
               <div className="col-5 align-items-center">
                 <div className="card border-secondary">
                   <div className="card-body">
-                    <h4 className="card-title mb-3">Complaint Details</h4>
+                    <h4 className="card-title mb-3 text-center">
+                      Complaint Details
+                    </h4>
                     <div className="card-text">
                       <DeleteIdContext.Provider value={deleteid.id}>
                         <IdContext.Provider value={viewid.id}>
