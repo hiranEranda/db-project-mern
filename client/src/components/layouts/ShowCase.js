@@ -9,7 +9,7 @@ function ShowCase() {
           <div className="d-sm-flex align-items-center justify-content-between">
             <div>
               <h1>
-                Hello <span className="text-warning">outside</span>
+                Hello <span className="text-warning">!!!</span>
               </h1>
               <p className="lead my-4">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem
@@ -54,7 +54,7 @@ function ShowCase() {
                     aria-label="Close"
                   ></button>
                 </div>
-                <div className="modal-body">
+                <div className="modal-body text-dark">
                   <p className="lead">Enter your details to register</p>
                   <Register />
                 </div>

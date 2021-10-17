@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Redirect } from "react-router-dom";
-import { Button } from "@material-ui/core";
 import "../../css/complaint.css";
 import axios from "axios";
 import AppNavBar from "../layouts/AppNavBar";
+import AutoComplete from "./AutoComplete";
 
 function MakeComplaint({ authorized }) {
   const [complaint, setComplaint] = useState({
@@ -11,6 +11,7 @@ function MakeComplaint({ authorized }) {
     description: "",
     product: "",
     seller: "",
+    seller_id: "",
     seller_r_p: "",
   });
 
@@ -18,6 +19,44 @@ function MakeComplaint({ authorized }) {
     setComplaint({
       ...complaint,
       [e.target.name]: e.target.value,
+    });
+  };
+  ///////////////////////////////////////////////////////
+  const [sellers, setSellers] = useState([]);
+  const [matches, setMatches] = useState([]);
+
+  useEffect(() => {
+    const seller = async () => {
+      const res = await axios.get(`http://localhost:5000/api/seller`, {
+        headers: { authToken: sessionStorage.getItem("authToken") },
+      });
+      setSellers(res.data);
+    };
+    seller();
+  }, [matches]);
+
+  const searchSeller = (text) => {
+    setComplaint({ ...complaint, seller: text });
+    let matches = sellers.filter((seller) => {
+      const regex = new RegExp(`^${text}`, "gi");
+      return (
+        seller.sFname.match(regex) ||
+        seller.sLname.match(regex) ||
+        seller.s_address.match(regex)
+      );
+    });
+    if (text === "") {
+      matches = [];
+    }
+    setMatches(matches);
+  };
+
+  ///////////////////////////////////////////////////////
+  const suggestion = (firstName, lastName, address, id) => {
+    setComplaint({
+      ...complaint,
+      seller: firstName + " " + lastName + "/" + address,
+      seller_id: id,
     });
   };
 
@@ -36,12 +75,35 @@ function MakeComplaint({ authorized }) {
           description: "",
           product: "",
           seller: "",
+          seller_id: "",
           seller_r_p: "",
         });
         alert("complaint filed");
       })
       .catch((e) => console.log(e));
   };
+
+  const [isVisible, setVisibility] = useState(false);
+  const searchContainer = useRef(null);
+
+  useEffect(() => {
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (e) => {
+    if (
+      searchContainer.current &&
+      !searchContainer.current.contains(e.target)
+    ) {
+      hideSuggestions();
+    }
+  };
+
+  const showSuggestions = () => setVisibility(true);
+  const hideSuggestions = () => setVisibility(false);
 
   if (!authorized) {
     return (
@@ -95,15 +157,34 @@ function MakeComplaint({ authorized }) {
                     onChange={handleData}
                   />
                 </div>
-                <div className="mb-1">
-                  <label className="col-form-label">Seller ID</label>
+
+                <div className="mb-1" ref={searchContainer}>
+                  <label className="col-form-label">Seller</label>
                   <input
                     type="text"
                     name="seller"
                     className="form-control"
                     value={complaint.seller}
-                    onChange={handleData}
+                    onClick={showSuggestions}
+                    onChange={(e) => searchSeller(e.target.value)}
                   />
+                  {matches &&
+                    isVisible &&
+                    matches.map((item, index) => (
+                      <AutoComplete
+                        key={index}
+                        onSelectItem={() => {
+                          hideSuggestions();
+                          suggestion(
+                            item.sFname,
+                            item.sLname,
+                            item.s_address,
+                            item.seller_id
+                          );
+                        }}
+                        {...item}
+                      />
+                    ))}
                 </div>
                 <div className="mb-1">
                   <label className="col-form-label">Sellers Retail Price</label>

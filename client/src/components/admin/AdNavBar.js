@@ -30,9 +30,7 @@ function AdNavBar() {
             {authState.status ? (
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <Link to="#" className="nav-link">
-                    Welcome {authState.username}
-                  </Link>
+                  <Link className="nav-link">Welcome {authState.username}</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/admin" className="nav-link">

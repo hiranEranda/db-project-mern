@@ -6,6 +6,7 @@ const config = require("config");
 
 const client = require("./routes/client");
 const complaint = require("./routes/complaint");
+const seller = require("./routes/seller");
 const products = require("./routes/products");
 const admin = require("./routes/admin");
 const auth = require("./routes/auth");
@@ -24,6 +25,7 @@ app.use(helmet());
 // Routes
 app.use("/api/client", client);
 app.use("/api/complaints", complaint);
+app.use("/api/seller", seller);
 app.use("/api/products", products);
 app.use("/api/admin", admin);
 app.use("/api/auth", auth);

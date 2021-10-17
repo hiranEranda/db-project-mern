@@ -8,7 +8,7 @@ function ShowCase_IN() {
           <div className="d-sm-flex align-items-center justify-content-between">
             <div>
               <h1>
-                Hello <span className="text-warning">inside</span>
+                Welcome <span className="text-warning">again!!!</span>
               </h1>
               <p className="lead my-4">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem

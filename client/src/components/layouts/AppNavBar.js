@@ -31,9 +31,7 @@ function AppNavBar() {
             <ul className="navbar-nav ms-auto">
               {authState.status && (
                 <li className="nav-item">
-                  <Link to="#" className="nav-link">
-                    Welcome {authState.username}
-                  </Link>
+                  <Link className="nav-link">Welcome {authState.username}</Link>
                 </li>
               )}
               <li className="nav-item">

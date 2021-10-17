@@ -113,13 +113,13 @@ function getMaxPrice(product) {
 // addComplaints
 function addComplaints(details) {
   return new Promise(async (resolve, reject) => {
-    let { subject, description, product, seller_r_p, seller, client_id } =
+    let { subject, description, product, seller_r_p, seller_id, client_id } =
       details;
 
     let max_price = await getMaxPrice(product);
-
+    console.log(max_price);
     let sql = `INSERT INTO complaint(subject, description, product, max_price, sellers_retail_price, seller_id, consumer_id, is_deleted)
-              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller}', ${client_id}, 0)`;
+              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller_id}', ${client_id}, 0)`;
     db.query(sql, (error, results) => {
       if (error) {
         console.log(error.message);
@@ -293,17 +293,32 @@ function getSellerComplaints(seller_id) {
   });
 }
 
+//-------------------------------------------------Seller-------------------------------------------------
+// get Sellers info
+function getSellersInfo(complaint_id) {
+  return new Promise((resolve, reject) => {
+    sql = `Select sFname, sLname, s_address, seller_id
+            FROM seller
+            ORDER BY seller_id DESC`;
+    db.query(sql, (error, result) => {
+      if (error) console.log(error.message);
+      resolve(result);
+      reject(new Error("from complant getSellersInfo"));
+    });
+  });
+}
+
 module.exports = {
   //methods of products
   getAll: getAll,
   filterByType: filterByType,
-  // methods of sellers
-  // getSeller: getSeller,
   //methods of complaint
   addComplaints: addComplaints,
   getMyComplaints: getMyComplaints,
   viewComplaint: viewComplaint,
   deleteComplaint: deleteComplaint,
+  //seller_info_for_complaint
+  getSellersInfo: getSellersInfo,
   //auth
   getClient: getClient,
   regClient: regClient,
