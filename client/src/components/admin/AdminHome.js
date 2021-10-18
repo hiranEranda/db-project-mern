@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import AdNavBar from "./AdNavBar";
+import Area from "./charts/Area";
+import Products from "./charts/Products";
 
 function AdminHome({ authorized }) {
   if (!authorized) {
@@ -45,6 +47,12 @@ function AdminHome({ authorized }) {
             </div>
           </div>
         </div>
+      </div>
+      <div className="container mt-5 mb-5 w-50">
+        <Products />
+      </div>
+      <div className="container mt-5 mb-5 w-50">
+        <Area />
       </div>
     </>
   );

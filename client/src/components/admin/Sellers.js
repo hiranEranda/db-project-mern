@@ -20,7 +20,6 @@ function Sellers({ authorized }) {
   const [viewid, setViewid] = useState({ id: 0 });
 
   useEffect(() => {
-    console.log("getting");
     axios
       .get(`http://localhost:5000/api/admin/sellers`, {
         headers: { authToken: sessionStorage.getItem("authToken") },

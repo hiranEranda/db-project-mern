@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Redirect } from "react-router-dom";
-import "../../css/complaint.css";
 import axios from "axios";
 import AppNavBar from "../layouts/AppNavBar";
-import AutoComplete from "./AutoComplete";
+import SellerAutoComplete from "./SellerAutoComplete";
 
 function MakeComplaint({ authorized }) {
+  // complaint state
   const [complaint, setComplaint] = useState({
     subject: "",
     description: "",
@@ -15,13 +15,15 @@ function MakeComplaint({ authorized }) {
     seller_r_p: "",
   });
 
+  // updating complaint state except seller and product
   const handleData = (e) => {
     setComplaint({
       ...complaint,
       [e.target.name]: e.target.value,
     });
   };
-  ///////////////////////////////////////////////////////
+
+  // For update seller and seller_id in complaint state
   const [sellers, setSellers] = useState([]);
   const [matches, setMatches] = useState([]);
 
@@ -51,7 +53,6 @@ function MakeComplaint({ authorized }) {
     setMatches(matches);
   };
 
-  ///////////////////////////////////////////////////////
   const suggestion = (firstName, lastName, address, id) => {
     setComplaint({
       ...complaint,
@@ -60,6 +61,7 @@ function MakeComplaint({ authorized }) {
     });
   };
 
+  // to submit the complaint
   const formHandler = (e) => {
     e.preventDefault();
     console.log("form handler called");
@@ -83,6 +85,7 @@ function MakeComplaint({ authorized }) {
       .catch((e) => console.log(e));
   };
 
+  // autocomplete div handler
   const [isVisible, setVisibility] = useState(false);
   const searchContainer = useRef(null);
 
@@ -103,7 +106,10 @@ function MakeComplaint({ authorized }) {
   };
 
   const showSuggestions = () => setVisibility(true);
-  const hideSuggestions = () => setVisibility(false);
+  const hideSuggestions = () => {
+    setVisibility(false);
+    setMatches([]);
+  };
 
   if (!authorized) {
     return (
@@ -128,6 +134,7 @@ function MakeComplaint({ authorized }) {
                     Select the most suitable reason
                   </label>
                   <select
+                    required="true"
                     name="subject"
                     className="form-control"
                     value={complaint.subject}
@@ -140,6 +147,7 @@ function MakeComplaint({ authorized }) {
                 <div className="mb-1">
                   <label className="col-form-label">Description</label>
                   <input
+                    required="true"
                     type="text"
                     name="description"
                     className="form-control"
@@ -150,6 +158,7 @@ function MakeComplaint({ authorized }) {
                 <div className="mb-1">
                   <label className="col-form-label">Product</label>
                   <input
+                    required="true"
                     type="text"
                     name="product"
                     className="form-control"
@@ -161,6 +170,7 @@ function MakeComplaint({ authorized }) {
                 <div className="mb-1" ref={searchContainer}>
                   <label className="col-form-label">Seller</label>
                   <input
+                    required="true"
                     type="text"
                     name="seller"
                     className="form-control"
@@ -171,7 +181,7 @@ function MakeComplaint({ authorized }) {
                   {matches &&
                     isVisible &&
                     matches.map((item, index) => (
-                      <AutoComplete
+                      <SellerAutoComplete
                         key={index}
                         onSelectItem={() => {
                           hideSuggestions();
@@ -189,6 +199,7 @@ function MakeComplaint({ authorized }) {
                 <div className="mb-1">
                   <label className="col-form-label">Sellers Retail Price</label>
                   <input
+                    required="true"
                     type="text"
                     name="seller_r_p"
                     className="form-control"
