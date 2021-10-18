@@ -152,4 +152,30 @@ router.get("/seller/complaints/:id", auth, async (req, res) => {
   }
 });
 
+// @route   GET api/admin/complaint/products
+// @desc    get top 10 products that have complaints
+// @access  Private
+router.get("/complaint/products", auth, async (req, res) => {
+  console.log("get top 10 products called");
+  try {
+    let data = await dbOperations.getTopProducts();
+    res.send(data);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
+// @route   GET api/admin/complaint/products
+// @desc    get top 10 products that have complaints
+// @access  Private
+router.get("/complaint/areas", auth, async (req, res) => {
+  console.log("get top areas called");
+  try {
+    let data = await dbOperations.getTopAreas();
+    res.send(data);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
 module.exports = router;

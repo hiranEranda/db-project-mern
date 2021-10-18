@@ -95,6 +95,7 @@ function getMyComplaints(id) {
 // getting the max price of user defined product
 function getMaxPrice(product) {
   return new Promise((resolve, reject) => {
+    console.log("get max price called");
     let max_price = 0;
     let sql_1 = `SELECT mrp FROM Max_retail_price m
             JOIN Products as p
@@ -104,7 +105,6 @@ function getMaxPrice(product) {
     db.query(sql_1, (error, results) => {
       if (error) return console.log(error.message);
       max_price = results[0].mrp;
-      console.log("get max price called");
       resolve(max_price);
       reject(new Error("from getMaxPrice"));
     });
@@ -293,11 +293,45 @@ function getSellerComplaints(seller_id) {
   });
 }
 
+// get top 10 products that have complaints
+function getTopProducts() {
+  return new Promise((resolve, reject) => {
+    sql = `SELECT COUNT(*) complaints, product
+            FROM complaint 
+            GROUP BY product`;
+
+    db.query(sql, (error, result) => {
+      if (error) console.log(error.message);
+      resolve(result);
+      reject(new Error("from getTopProducts"));
+    });
+  });
+}
+
+// get top areas that have complaints
+function getTopAreas() {
+  return new Promise((resolve, reject) => {
+    sql = `SELECT COUNT(*) complaints, location
+            FROM complaint c
+            JOIN seller s
+            ON c.seller_id = s.seller_id
+            JOIN market m
+            ON s.market_id = m.market_id
+            GROUP BY location`;
+
+    db.query(sql, (error, result) => {
+      if (error) console.log(error.message);
+      resolve(result);
+      reject(new Error("from getTopAreas"));
+    });
+  });
+}
+
 //-------------------------------------------------Seller-------------------------------------------------
 // get Sellers info
 function getSellersInfo(complaint_id) {
   return new Promise((resolve, reject) => {
-    sql = `Select sFname, sLname, s_address, seller_id
+    sql = `SELECT sFname, sLname, s_address, seller_id
             FROM seller
             ORDER BY seller_id DESC`;
     db.query(sql, (error, result) => {
@@ -331,4 +365,6 @@ module.exports = {
   getSellers: getSellers,
   getSeller: getSeller,
   getSellerComplaints: getSellerComplaints,
+  getTopProducts: getTopProducts,
+  getTopAreas: getTopAreas,
 };
