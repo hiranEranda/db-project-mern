@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Products() {
-  const [state, setstate] = useState([]);
+  const [state, setState] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products/all")
       .then((res) => {
         if (res.data.error);
-        setstate(res.data);
+        setState(res.data);
       })
       .catch((e) => {
         console.log("err was called from all");

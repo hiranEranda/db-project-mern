@@ -4,46 +4,10 @@ import axios from "axios";
 import AppNavBar from "../layouts/AppNavBar";
 import SellerAutoComplete from "./SellerAutoComplete";
 
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import Autocomplete from "@mui/material/Autocomplete";
-
 function MakeComplaint({ authorized }) {
-  // get product data
-  const [product, setProduct] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/products/all")
-      .then((res) => {
-        if (res.data.error);
-        setProduct(res.data);
-      })
-      .catch((e) => {
-        console.log("err was called from product fetching");
-      });
-  }, []);
-
-  // get seller data
-  const [sellers, setSellers] = useState([]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:5000/api/seller`, {
-  //       headers: { authToken: sessionStorage.getItem("authToken") },
-  //     })
-  //     .then((res) => {
-  //       if (res.data.error);
-  //       setSellers(res.data);
-  //     })
-  //     .catch((e) => {
-  //       console.log("err was called from sellers fetching");
-  //     });
-  // }, []);
-
   // complaint state
   const [complaint, setComplaint] = useState({
-    subject: "Item over priced",
+    subject: "",
     description: "",
     product: "",
     seller: "",
@@ -59,15 +23,8 @@ function MakeComplaint({ authorized }) {
     });
   };
 
-  // updating complaint product state
-  const handleProduct = (val) => {
-    setComplaint({
-      ...complaint,
-      product: val,
-    });
-  };
-
   // For update seller and seller_id in complaint state
+  const [sellers, setSellers] = useState([]);
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
@@ -76,7 +33,6 @@ function MakeComplaint({ authorized }) {
         headers: { authToken: sessionStorage.getItem("authToken") },
       });
       setSellers(res.data);
-      console.log(sellers);
     };
     seller();
   }, [matches]);
@@ -117,7 +73,7 @@ function MakeComplaint({ authorized }) {
       .then((res) => {
         console.log(res.status);
         setComplaint({
-          subject: "Item over priced",
+          subject: "",
           description: "",
           product: "",
           seller: "",
@@ -178,7 +134,7 @@ function MakeComplaint({ authorized }) {
                     Select the most suitable reason
                   </label>
                   <select
-                    required={true}
+                    required="true"
                     name="subject"
                     className="form-control"
                     value={complaint.subject}
@@ -191,7 +147,7 @@ function MakeComplaint({ authorized }) {
                 <div className="mb-1">
                   <label className="col-form-label">Description</label>
                   <input
-                    required={true}
+                    required="true"
                     type="text"
                     name="description"
                     className="form-control"
@@ -201,53 +157,20 @@ function MakeComplaint({ authorized }) {
                 </div>
                 <div className="mb-1">
                   <label className="col-form-label">Product</label>
-                  <Stack spacing={2}>
-                    <Autocomplete
-                      name="product"
-                      options={product.map((option) => option.name)}
-                      onChange={(event, value) => {
-                        console.log(value);
-                        handleProduct(value);
-                      }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Product" />
-                      )}
-                    />
-                  </Stack>
-                  {/* <input
+                  <input
                     required="true"
                     type="text"
                     name="product"
                     className="form-control"
                     value={complaint.product}
                     onChange={handleData}
-                  /> */}
+                  />
                 </div>
 
                 <div className="mb-1" ref={searchContainer}>
                   <label className="col-form-label">Seller</label>
-                  {/* <Stack spacing={2}>
-                    <Autocomplete
-                      name="seller"
-                      options={sellers.map(
-                        (option) =>
-                          option.sFname +
-                          " " +
-                          option.sLname +
-                          "/" +
-                          option.s_address
-                      )}
-                      onChange={(event, value) => {
-                        console.log(value);
-                        handleSeller(value);
-                      }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Seller" />
-                      )}
-                    />
-                  </Stack> */}
                   <input
-                    required={true}
+                    required="true"
                     type="text"
                     name="seller"
                     className="form-control"
@@ -276,7 +199,7 @@ function MakeComplaint({ authorized }) {
                 <div className="mb-1">
                   <label className="col-form-label">Sellers Retail Price</label>
                   <input
-                    required={true}
+                    required="true"
                     type="text"
                     name="seller_r_p"
                     className="form-control"

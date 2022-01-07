@@ -43,15 +43,46 @@ router.post("/adlogin", async (req, res) => {
 // @route   GET api/admin/allcomplaints
 // @desc    Get all complaints
 // @access  Private
-router.get("/allcomplaints", auth, async (req, res) => {
-  console.log("admin - allcomplaints");
+router.get("/allcomplaints/", auth, async (req, res) => {
+  console.log("admin - all complaints");
   try {
     let data = await dbOperations.getAllComplaints();
+
     data.map((item) => {
       item.complaint_date = item.complaint_date.toISOString().split("T")[0];
       return item;
     });
     res.send(data);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
+// @route   GET api/admin/filteredcomplaints
+// @desc    Get all complaints
+// @access  Private
+router.get("/filteredcomplaints/:date", auth, async (req, res) => {
+  console.log("admin - filtered complaints");
+  let date = req.params.date;
+  try {
+    let data = await dbOperations.getAllComplaints();
+    // res.send(data);
+
+    data.map((item) => {
+      item.complaint_date = item.complaint_date.toISOString().split("T")[0];
+      return item;
+    });
+
+    var reduced = data.reduce(function (filtered, comp) {
+      if (comp.complaint_date == date) {
+        var newData = comp;
+        filtered.push(newData);
+      }
+      return filtered;
+    }, []);
+
+    console.log(reduced);
+    res.send(reduced);
   } catch (e) {
     res.send(e.message);
   }
@@ -146,19 +177,6 @@ router.get("/seller/complaints/:id", auth, async (req, res) => {
       item.complaint_date = item.complaint_date.toISOString().split("T")[0];
       return item;
     });
-    res.send(data);
-  } catch (e) {
-    res.send(e.message);
-  }
-});
-
-// @route   GET api/admin/complaint/products
-// @desc    get top 10 products that have complaints
-// @access  Private
-router.get("/complaint/products", auth, async (req, res) => {
-  console.log("get top 10 products called");
-  try {
-    let data = await dbOperations.getTopProducts();
     res.send(data);
   } catch (e) {
     res.send(e.message);

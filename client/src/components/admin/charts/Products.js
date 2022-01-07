@@ -1,10 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
+import { FlagContext } from "../AdminHome.js";
 
 function Products() {
   const [name, setName] = useState([]);
   const [complaints, setComplaints] = useState([]);
+
+  const flags = useContext(FlagContext);
+  ////////////////////////////////
+  function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+  var curr = new Date(); // get current date
+  var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+  var last = first + 6; // last day is the first day + 6
+
+  var firstday = new Date(curr.setDate(first)).toUTCString();
+  var lastday = new Date(curr.setDate(last)).toUTCString();
+
+  ////////////////////////////////
 
   const chartData = {
     labels: name,
@@ -28,25 +47,84 @@ function Products() {
     ],
   };
 
+  const getStats = (data) => {
+    // counting the number of complaints for a particular product
+    var res = Object.values(
+      data.reduce((a, { product }) => {
+        a[product] = a[product] || { product, count: 0 };
+        a[product].count++;
+        return a;
+      }, Object.create(null))
+    );
+
+    // mapping out the product names to a separate array
+    const productName = res.map((element, index) => {
+      return element.product;
+    });
+    setName(productName);
+
+    // mapping out the number of complaints to a separate array
+    const totalComplaints = res.map((element, index) => {
+      return element.count;
+    });
+    setComplaints(totalComplaints);
+  };
+
   useEffect(() => {
+    var curr = new Date(); // get current date
+    var date = convert(curr);
     axios
-      .get(`http://localhost:5000/api/admin/complaint/products`, {
+      .get(`http://localhost:5000/api/admin/allcomplaints`, {
         headers: { authToken: sessionStorage.getItem("authToken") },
       })
       .then((res) => {
-        // mapping out the product names to a separate array
-        const productName = res.data.map((element, index) => {
-          return element.product;
-        });
-        setName(productName);
-        // mapping out the number of complaints to a separate array
-        const totalComplaints = res.data.map((element, index) => {
-          return element.complaints;
-        });
-        setComplaints(totalComplaints);
+        if (flags.today) {
+          var reduced = res.data.reduce(function (filtered, comp) {
+            if (comp.complaint_date === date) {
+              var newData = comp;
+              filtered.push(newData);
+            }
+            return filtered;
+          }, []);
+          // console.log(reduced);
+          getStats(reduced);
+        }
+        if (flags.week) {
+          let startDate = convert(firstday);
+          let endDate = convert(lastday);
+          var reduced = res.data.reduce(function (filtered, comp) {
+            if (
+              comp.complaint_date > startDate &&
+              comp.complaint_date < endDate
+            ) {
+              var newData = comp;
+              filtered.push(newData);
+            }
+            return filtered;
+          }, []);
+          // console.log(reduced);
+          getStats(reduced);
+        }
+        if (flags.month) {
+          const split = date.split("-");
+          var reduced = res.data.reduce(function (filtered, comp) {
+            const split2 = comp.complaint_date.split("-");
+
+            if (split[0] === split2[0] && split[1] === split2[1]) {
+              console.log("match");
+              var newData = comp;
+              filtered.push(newData);
+            }
+            return filtered;
+          }, []);
+          getStats(reduced);
+        }
+        if (flags.all) {
+          getStats(res.data);
+        }
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [flags]);
 
   return (
     <div>

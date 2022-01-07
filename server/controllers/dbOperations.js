@@ -103,7 +103,7 @@ function getMaxPrice(product) {
             WHERE p.name = '${product}'`;
 
     db.query(sql_1, (error, results) => {
-      if (error) return console.log(error.message);
+      if (error) return alert(error.message);
       max_price = results[0].mrp;
       resolve(max_price);
       reject(new Error("from getMaxPrice"));
@@ -118,8 +118,8 @@ function addComplaints(details) {
 
     let max_price = await getMaxPrice(product);
     console.log(max_price);
-    let sql = `INSERT INTO complaint(subject, description, product, max_price, sellers_retail_price, seller_id, consumer_id, is_deleted)
-              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller_id}', ${client_id}, 0)`;
+    let sql = `INSERT INTO complaint(subject, description, product, max_price, sellers_retail_price, seller_id, consumer_id, is_deleted, complaint_date)
+              VALUES ('${subject}','${description}', '${product}', '${max_price}', '${seller_r_p}', '${seller_id}', ${client_id}, 0, NOW())`;
     db.query(sql, (error, results) => {
       if (error) {
         console.log(error.message);
@@ -177,7 +177,7 @@ function getAdmin(admin) {
 // getAllComplaints
 function getAllComplaints() {
   return new Promise((resolve, reject) => {
-    let sql = `SELECT subject, con.uFname, con.uLname, s.sFname, s.sLname, complaint_date, complaint_id FROM complaint as com
+    let sql = `SELECT subject, con.uFname, con.uLname, s.sFname, s.sLname, complaint_date, complaint_id, product FROM complaint as com
                 JOIN seller as s
                 ON com.seller_id = s.seller_id
                 JOIN consumers as con
@@ -293,21 +293,6 @@ function getSellerComplaints(seller_id) {
   });
 }
 
-// get top 10 products that have complaints
-function getTopProducts() {
-  return new Promise((resolve, reject) => {
-    sql = `SELECT COUNT(*) complaints, product
-            FROM complaint 
-            GROUP BY product`;
-
-    db.query(sql, (error, result) => {
-      if (error) console.log(error.message);
-      resolve(result);
-      reject(new Error("from getTopProducts"));
-    });
-  });
-}
-
 // get top areas that have complaints
 function getTopAreas() {
   return new Promise((resolve, reject) => {
@@ -365,6 +350,5 @@ module.exports = {
   getSellers: getSellers,
   getSeller: getSeller,
   getSellerComplaints: getSellerComplaints,
-  getTopProducts: getTopProducts,
   getTopAreas: getTopAreas,
 };
