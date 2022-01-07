@@ -1,0 +1,119 @@
+[33mcommit 21a5e884cf6c44fb4fa603cf644cb02f88eaad37[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: hiranEranda <hiraneranda98@gmail.com>
+Date:   Fri Jan 7 15:03:07 2022 +0530
+
+    products chart filtering done
+
+[33mcommit b6b505238f7cf108e7269443620a5b2cfaa14d42[m
+Author: hiranEranda <hiraneranda98@gmail.com>
+Date:   Tue Nov 9 11:00:57 2021 +0530
+
+    delete additional nodemodules folder
+
+[33mcommit ca35c5426c33ba129b610b530865968491a8bb2f[m
+Author: hiranEranda <hiraneranda98@gmail.com>
+Date:   Tue Nov 9 10:59:52 2021 +0530
+
+    re located
+
+[33mcommit 3db7ab257c0dafc15d0e95d60d204918abc86a14[m[33m ([m[1;31mcsc_mern/master[m[33m)[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Tue Oct 19 00:25:27 2021 +0530
+
+    products and area charts using complaints done,should modify for view daily
+
+[33mcommit 79c59d0b9d36abab5185f9024b4dfeb314ea956f[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Tue Oct 19 00:21:38 2021 +0530
+
+    products and area charts using complaints done,should modify for view daily
+
+[33mcommit c705b4ed4abb3bb15dc528c930cb6fc706c0d6e6[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Mon Oct 18 00:21:54 2021 +0530
+
+    complaint modified to show sellers name/address instead of id
+
+[33mcommit 0a3682012840f204a5ad442d8c98542e100d187f[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Thu Sep 23 10:27:11 2021 +0530
+
+    admin completed, bug fixes and client profile update left
+
+[33mcommit f76c9981544af3ac4c5a973e48bcd0717096e660[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Thu Sep 23 02:41:46 2021 +0530
+
+    only admin seller details left
+
+[33mcommit 502f52beeb24e1123ca7dcd42cbc1e6bb57adc21[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Thu Sep 23 00:00:34 2021 +0530
+
+    client complete, admin data viewing left
+
+[33mcommit bdb9dacaaeb17c19fcd505345b9c1d8d5d79e9cb[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Wed Sep 22 14:05:47 2021 +0530
+
+    client ui done
+
+[33mcommit 4cddd0b4d007d116a900c0ad23514b0f56cb7a52[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Tue Sep 21 06:04:23 2021 +0530
+
+    bugs fixed
+
+[33mcommit 77ef37fe731c510af8f203422114af032684ef41[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Tue Sep 21 05:13:47 2021 +0530
+
+    server routes potected.client home route protected
+
+[33mcommit fb673e05fad140108eb0092cce19f3e541710471[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Sun Sep 19 01:37:24 2021 +0530
+
+    loggin and register api configured
+
+[33mcommit 0e4b74c26b39279f7f514b5a6d02f019cebda587[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Fri Sep 17 22:23:00 2021 +0530
+
+    2021-09-17
+
+[33mcommit e13de0f4af10020147a1613e1ea1ebdb3319e613[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Fri Sep 17 11:19:14 2021 +0530
+
+    add complaint
+
+[33mcommit e1c02599967d26fa67f915ddfd19302c1434571c[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Thu Sep 16 01:26:45 2021 +0530
+
+    redux boilerplate created
+
+[33mcommit ab056dd98cde94643686444e279c0f3108bfc835[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Sun Sep 12 21:48:15 2021 +0530
+
+    products fetched and displayed
+
+[33mcommit 424049a7ab72b10b083cdd04e4575e597dd6a4d5[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Sun Sep 12 17:36:35 2021 +0530
+
+    nav bar created
+
+[33mcommit d5368d0d02fe8808cff30e3e75074ded01bb4643[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Sun Sep 12 03:11:11 2021 +0530
+
+    frontend
+
+[33mcommit 94127fe05b171db34afb1aa94580e60718f48ea0[m
+Author: hiraneranda <hiraneranda98@gmail.com>
+Date:   Sun Sep 12 02:59:37 2021 +0530
+
+    init

@@ -190,6 +190,10 @@ router.get("/complaint/areas", auth, async (req, res) => {
   console.log("get top areas called");
   try {
     let data = await dbOperations.getTopAreas();
+    data.map((item) => {
+      item.complaint_date = item.complaint_date.toISOString().split("T")[0];
+      return item;
+    });
     res.send(data);
   } catch (e) {
     res.send(e.message);

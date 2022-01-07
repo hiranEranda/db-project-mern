@@ -8,7 +8,7 @@ function Products() {
   const [complaints, setComplaints] = useState([]);
 
   const flags = useContext(FlagContext);
-  ////////////////////////////////
+
   function convert(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -20,32 +20,8 @@ function Products() {
   var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
   var last = first + 6; // last day is the first day + 6
 
-  var firstday = new Date(curr.setDate(first)).toUTCString();
-  var lastday = new Date(curr.setDate(last)).toUTCString();
-
-  ////////////////////////////////
-
-  const chartData = {
-    labels: name,
-    datasets: [
-      {
-        label: "Complaint count",
-        data: complaints,
-        backgroundColor: [
-          "rgba(192, 10, 45, 1)",
-          "rgba(212, 23, 141, 0.9)",
-          "rgba(25, 81, 24, 1)",
-          "rgba(202, 235, 159, 0.7)",
-          "rgba(82, 120, 114, 1)",
-          "rgba(100, 32, 173, 0.5)",
-          "rgba(104, 63, 177, 0.3)",
-          "rgba(135, 124, 13, 0.3)",
-          "rgba(74, 151, 251, 0.7)",
-          "rgba(226, 195, 229, 0.2)",
-        ],
-      },
-    ],
-  };
+  var firstDay = new Date(curr.setDate(first)).toUTCString();
+  var lastDay = new Date(curr.setDate(last)).toUTCString();
 
   const getStats = (data) => {
     // counting the number of complaints for a particular product
@@ -90,8 +66,8 @@ function Products() {
           getStats(reduced);
         }
         if (flags.week) {
-          let startDate = convert(firstday);
-          let endDate = convert(lastday);
+          let startDate = convert(firstDay);
+          let endDate = convert(lastDay);
           var reduced = res.data.reduce(function (filtered, comp) {
             if (
               comp.complaint_date > startDate &&
@@ -124,7 +100,29 @@ function Products() {
         }
       })
       .catch((e) => console.log(e));
-  }, [flags]);
+  }, [flags, firstDay, lastDay]);
+
+  const chartData = {
+    labels: name,
+    datasets: [
+      {
+        label: "Complaint count",
+        data: complaints,
+        backgroundColor: [
+          "rgba(192, 10, 45, 1)",
+          "rgba(212, 23, 141, 0.9)",
+          "rgba(25, 81, 24, 1)",
+          "rgba(202, 235, 159, 0.7)",
+          "rgba(82, 120, 114, 1)",
+          "rgba(100, 32, 173, 0.5)",
+          "rgba(104, 63, 177, 0.3)",
+          "rgba(135, 124, 13, 0.3)",
+          "rgba(74, 151, 251, 0.7)",
+          "rgba(226, 195, 229, 0.2)",
+        ],
+      },
+    ],
+  };
 
   return (
     <div>

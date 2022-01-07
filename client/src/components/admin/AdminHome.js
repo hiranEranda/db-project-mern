@@ -94,7 +94,9 @@ function AdminHome({ authorized }) {
               </FlagContext.Provider>
             </div>
             <div className="container mt-5 mb-2 w-50">
-              <Area />
+              <FlagContext.Provider value={flags}>
+                <Area />
+              </FlagContext.Provider>
             </div>
           </div>
         </div>

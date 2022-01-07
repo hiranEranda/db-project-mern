@@ -296,13 +296,12 @@ function getSellerComplaints(seller_id) {
 // get top areas that have complaints
 function getTopAreas() {
   return new Promise((resolve, reject) => {
-    sql = `SELECT COUNT(*) complaints, location
+    sql = `SELECT complaint_date, location
             FROM complaint c
             JOIN seller s
             ON c.seller_id = s.seller_id
             JOIN market m
-            ON s.market_id = m.market_id
-            GROUP BY location`;
+            ON s.market_id = m.market_id`;
 
     db.query(sql, (error, result) => {
       if (error) console.log(error.message);
