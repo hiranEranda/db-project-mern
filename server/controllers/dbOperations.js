@@ -321,7 +321,7 @@ function getSellersInfo(complaint_id) {
     db.query(sql, (error, result) => {
       if (error) console.log(error.message);
       resolve(result);
-      reject(new Error("from complant getSellersInfo"));
+      reject(new Error("from complaint getSellersInfo"));
     });
   });
 }

@@ -28,10 +28,10 @@ function ViewComplaint({ authorized }) {
       {complaints.map((complaint) => (
         <div className="container" key={complaint.complaint_id}>
           <dl className="row">
-            <dt className="col-sm-5">Complaint ID</dt>
+            {/* <dt className="col-sm-5">Complaint ID</dt>
             <dd className="col-sm-7">{complaint.complaint_id}</dd>
             <dt className="col-sm-5">Complainant ID</dt>
-            <dd className="col-sm-7"> {complaint.consumer_id} </dd>
+            <dd className="col-sm-7"> {complaint.consumer_id} </dd> */}
             <dt className="col-sm-5">Subject</dt>
             <dd className="col-sm-7"> {complaint.subject}</dd>
             <dt className="col-sm-5">Description</dt>
